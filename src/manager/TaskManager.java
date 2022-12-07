@@ -66,43 +66,42 @@ public class TaskManager {
     }
 
     public Task getTask(int id) {
-        if (tasks.containsKey(id))
-            return tasks.get(id);
-        else
-            return null;
+        return tasks.getOrDefault(id, null);
     }
 
     public EpicTask getEpicTask(int id) {
-        if (epicTasks.containsKey(id))
-            return epicTasks.get(id);
-        else
-            return null;
+        return epicTasks.getOrDefault(id, null);
     }
 
     public SubTask getSubTask(int id) {
-        if (subTasks.containsKey(id))
-            return subTasks.get(id);
-        else
-            return null;
+        return subTasks.getOrDefault(id, null);
     }
 
-    public void addNewTask(Task task) {
+    public int addNewTask(Task task) {
         if (task != null) {
             int newId = idGenerator++;
             tasks.put(newId, task);
             task.setId(newId);
-        } else System.out.println("Невозможно выполнить операцию");
+            return newId;
+        } else {
+            System.out.println("Невозможно выполнить операцию");
+            return -1;
+        }
     }
 
-    public void addNewEpicTask(EpicTask epicTask) {
+    public int addNewEpicTask(EpicTask epicTask) {
         if (epicTask != null) {
             int newId = idGenerator++;
             epicTasks.put(newId, epicTask);
             epicTask.setId(newId);
-        } else System.out.println("Невозможно выполнить операцию");
+            return newId;
+        } else {
+            System.out.println("Невозможно выполнить операцию");
+            return -1;
+        }
     }
 
-    public void addNewSubTask(SubTask subTask) {
+    public int addNewSubTask(SubTask subTask) {
         if (subTask != null) {
             int newId = idGenerator++;
             subTasks.put(newId, subTask);
@@ -113,23 +112,28 @@ public class TaskManager {
             epicTask.addSubTaskId(subTask.getId());
             // Обновляем статусы эпиков
             updateEpicTaskStatus(epicTask);
-        } else System.out.println("Невозможно выполнить операцию");
+
+            return newId;
+        } else {
+            System.out.println("Невозможно выполнить операцию");
+            return -1;
+        }
     }
 
     public void updateTask(Task task) {
-        if (task != null) {
+        if (task != null && tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
         }
     }
 
     public void updateEpicTask(EpicTask epicTask) {
-        if (epicTask != null) {
+        if (epicTask != null && epicTasks.containsKey(epicTask.getId())) {
             epicTasks.put(epicTask.getId(), epicTask);
         }
     }
 
     public void updateSubTask(SubTask subTask) {
-        if (subTask != null) {
+        if (subTask != null && subTasks.containsKey(subTask.getId())) {
             subTasks.put(subTask.getId(), subTask);
             // Обновляем статус эпика
             updateEpicTaskStatus(
@@ -179,16 +183,19 @@ public class TaskManager {
             return;
         }
 
-        ArrayList<String> subTaskStatuses = new ArrayList<>();
+        ArrayList<String> subTaskStatuses = new ArrayList<>(); /* Я не разобрался с этой коллекцией еще, посмотрю
+                                            попозже, но вроде бы она должна быть у нас в курсе через пару спринтов */
         for (Integer subTaskId : epicTask.getSubTaskIds()) {
             String subTaskStatus = subTasks.get(subTaskId).getStatus();
             subTaskStatuses.add(subTaskStatus);
         }
 
-        if (subTaskStatuses.contains("NEW") && !subTaskStatuses.contains("IN_PROGRESS") && !subTaskStatuses.contains("DONE")) {
+        if (subTaskStatuses.contains("NEW")
+                && !subTaskStatuses.contains("IN_PROGRESS") && !subTaskStatuses.contains("DONE")) {
             epicTask.setStatus("NEW");
 
-        } else if (subTaskStatuses.contains("DONE") && !subTaskStatuses.contains("IN_PROGRESS") && !subTaskStatuses.contains("NEW")) {
+        } else if (subTaskStatuses.contains("DONE")
+                && !subTaskStatuses.contains("IN_PROGRESS") && !subTaskStatuses.contains("NEW")) {
             epicTask.setStatus("DONE");
         } else {
             epicTask.setStatus("IN_PROGRESS");

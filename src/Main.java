@@ -14,35 +14,35 @@ public class Main {
 
         // Создаем 2 задачи
         taskManager.addNewTask(
-                new Task(0, "Написать код", "Выполнить финалку 3 спринта", "IN_PROGRESS")
+                new Task("Написать код", "Выполнить финалку 3 спринта", "IN_PROGRESS")
         );
         taskManager.addNewTask(
-                new Task(0, "Лечь спать", "Выспаться перед сложным днем", "NEW")
+                new Task("Лечь спать", "Выспаться перед сложным днем", "NEW")
         );
 
         // Создаем эпик с двумя подзадачами
-        taskManager.addNewEpicTask(
-                new EpicTask(0, "Переезд", "", "NEW")
+        int epicId1 = taskManager.addNewEpicTask(
+                new EpicTask("Переезд", "")
         );
         taskManager.addNewSubTask(
-                new SubTask(0, "Собрать коробки", "1", "DONE", 2)
+                new SubTask("Собрать коробки", "1", "DONE", epicId1)
         );
         taskManager.addNewSubTask(
-                new SubTask(0, "Упаковать кошку", "2", "NEW", 2)
+                new SubTask("Упаковать кошку", "2", "NEW", epicId1)
         );
 
         // Создаем эпик с 1 подзадачей
-        taskManager.addNewEpicTask(
-                new EpicTask(0, "Второй эпик", "", "NEW")
+        int epicId2 = taskManager.addNewEpicTask(
+                new EpicTask("Второй эпик", "")
         );
         taskManager.addNewSubTask(
-                new SubTask(0, "Подзадача второго эпика", "2222", "DONE", 5)
+                new SubTask("Подзадача второго эпика", "2222", "DONE", epicId2)
         );
 
         printTestResults(); // Выводим результаты
 
         // Меняем данные первой подзадачи первого эпика
-        taskManager.updateSubTask(new SubTask(4, "Упаковать кошку", "22222", "DONE", 2));
+        taskManager.updateSubTask(new SubTask(4, "Упаковать кошку", "22222", "DONE", epicId1));
 
         printTestResults(); // Наблюдаем за результатом
 
