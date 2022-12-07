@@ -106,11 +106,11 @@ public class TaskManager {
         if (subTask != null) {
             int newId = idGenerator++;
             subTasks.put(newId, subTask);
+            subTask.setId(newId);
 
             // Привязываем сабТаск к эпику
             EpicTask epicTask = epicTasks.get(subTask.getEpicTaskId());
-            epicTask.addSubTaskId(subTask.getEpicTaskId());
-            updateEpicTaskStatus(epicTask);
+            epicTask.addSubTaskId(subTask.getId());
             // Обновляем статусы эпиков
             updateEpicTaskStatus(epicTask);
         } else System.out.println("Невозможно выполнить операцию");
