@@ -1,5 +1,6 @@
 package manager;
 
+import historyManager.HistoryManager;
 import tasks.EpicTask;
 import tasks.SubTask;
 import tasks.Task;
@@ -9,12 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class InMemoryTaskManager implements TaskManager{
+public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, EpicTask> epicTasks = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    private final HistoryManager historyManager = Managers.getDefaultHistoryManager();
     private int idGenerator = 0;
-    private final List<Task> viewsHistory = new ArrayList<>();
 
     @Override
     public ArrayList<Task> getTasks() {
@@ -78,24 +79,21 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public Task getTask(int id) {
         Task task = tasks.getOrDefault(id, null);
-        if (task != null)
-            addHistoryItem(task);
+        if (task != null) historyManager.add(task);
         return task;
     }
 
     @Override
     public EpicTask getEpicTask(int id) {
         EpicTask epicTask = epicTasks.getOrDefault(id, null);
-        if (epicTask != null)
-            addHistoryItem(epicTask);
+        if (epicTask != null) historyManager.add(epicTask);
         return epicTask;
     }
 
     @Override
     public SubTask getSubTask(int id) {
         SubTask subTask = subTasks.getOrDefault(id, null);
-        if (subTask != null)
-            addHistoryItem(subTask);
+        if (subTask != null) historyManager.add(subTask);
         return subTask;
     }
 
@@ -164,9 +162,7 @@ public class InMemoryTaskManager implements TaskManager{
         if (subTask != null && subTasks.containsKey(subTask.getId())) {
             subTasks.put(subTask.getId(), subTask);
             // Обновляем статус эпика
-            updateEpicTaskStatus(
-                    epicTasks.get(subTask.getEpicTaskId())
-            );
+            updateEpicTaskStatus(epicTasks.get(subTask.getEpicTaskId()));
         }
     }
 
@@ -207,12 +203,11 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public List<Task> getHistory() {
-        return viewsHistory;
+        return historyManager.getHistory();
     }
 
     private void updateEpicTaskStatus(EpicTask epicTask) {
-        if (epicTask == null)
-            return;
+        if (epicTask == null) return;
 
         if (epicTask.getSubTaskIds().isEmpty()) {
             epicTask.setStatus(TaskStatus.NEW);
@@ -236,12 +231,5 @@ public class InMemoryTaskManager implements TaskManager{
         } else {
             epicTask.setStatus(TaskStatus.IN_PROGRESS);
         }
-    }
-    private void addHistoryItem(Task task) {
-        final int MAX_HISTORY_SIZE = 10;
-        if (viewsHistory.size() == MAX_HISTORY_SIZE) {
-            viewsHistory.remove(0);
-        }
-        viewsHistory.add(task);
     }
 }

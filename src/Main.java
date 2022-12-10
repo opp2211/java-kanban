@@ -43,12 +43,13 @@ public class Main {
         );
 
         printAllTasks(); // Выводим все задачи
-        printHistory();
+        printHistory(); // Выводим историю (пустую)
 
-        taskManager.getSubTask(4);
-        // Меняем данные первой подзадачи первого эпика
-        taskManager.updateSubTask(new SubTask(4, "Упаковать кошку", "22222", TaskStatus.valueOf("DONE"), epicId1));
-        taskManager.getSubTask(4);
+        taskManager.getSubTask(4); // Вызываем подзадачу для записи в историю
+        taskManager.updateSubTask(
+                new SubTask(4, "Упаковать кошку", "22222", TaskStatus.valueOf("DONE"), epicId1)
+        ); // Меняем данные первой подзадачи первого эпика
+        taskManager.getSubTask(4); // Вызываем подзадачу для записи в историю
 
         printAllTasks(); // Наблюдаем за результатом
         printHistory();
