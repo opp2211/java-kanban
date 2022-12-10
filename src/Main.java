@@ -9,8 +9,8 @@ public class Main {
     static TaskManager taskManager = Managers.getDefault();
 
     public static void main(String[] args) {
+        System.out.println();
         executeTest();
-
     }
 
     public static void executeTest() {
@@ -42,26 +42,44 @@ public class Main {
                 new SubTask("Подзадача второго эпика", "2222", TaskStatus.valueOf("DONE"), epicId2)
         );
 
-        printAllTasks(); // Выводим результаты
+        printAllTasks(); // Выводим все задачи
+        printHistory();
 
+        taskManager.getSubTask(4);
         // Меняем данные первой подзадачи первого эпика
-
         taskManager.updateSubTask(new SubTask(4, "Упаковать кошку", "22222", TaskStatus.valueOf("DONE"), epicId1));
-
+        taskManager.getSubTask(4);
 
         printAllTasks(); // Наблюдаем за результатом
+        printHistory();
 
+        taskManager.getTask(0);
         taskManager.deleteTask(0);
+
+        printHistory();
+
+        taskManager.getEpicTask(2);
         taskManager.deleteEpicTask(2);
 
         printAllTasks(); // Наблюдаем за результатом
+        printHistory();
+
+        for (int i = 0; i < 10; i++) {
+            taskManager.getTask(1);
+        }
+        printHistory();
     }
 
-    public static void printAllTasks() {
-        System.out.println();
+    static void printAllTasks() {
         System.out.println(taskManager.getTasks());
         System.out.println(taskManager.getEpicTasks());
         System.out.println(taskManager.getSubTasks());
+        System.out.println();
+    }
+
+    static void printHistory() {
+        System.out.println("История просмотров (" + taskManager.getHistory().size() + "): ");
+        System.out.println(taskManager.getHistory());
         System.out.println();
     }
 }
