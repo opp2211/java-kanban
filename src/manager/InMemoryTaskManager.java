@@ -3,6 +3,7 @@ package manager;
 import tasks.EpicTask;
 import tasks.SubTask;
 import tasks.Task;
+import tasks.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -214,26 +215,26 @@ public class InMemoryTaskManager implements TaskManager{
             return;
 
         if (epicTask.getSubTaskIds().isEmpty()) {
-            epicTask.setStatus("NEW");
+            epicTask.setStatus(TaskStatus.NEW);
             return;
         }
 
-        ArrayList<String> subTaskStatuses = new ArrayList<>(); /* Я не разобрался с этой коллекцией еще, посмотрю
+        ArrayList<TaskStatus> subTaskStatuses = new ArrayList<>(); /* Я не разобрался с коллекцией Set еще, посмотрю
                                             попозже, но вроде бы она должна быть у нас в курсе через пару спринтов */
         for (Integer subTaskId : epicTask.getSubTaskIds()) {
-            String subTaskStatus = subTasks.get(subTaskId).getStatus();
+            TaskStatus subTaskStatus = subTasks.get(subTaskId).getStatus();
             subTaskStatuses.add(subTaskStatus);
         }
 
-        if (subTaskStatuses.contains("NEW")
-                && !subTaskStatuses.contains("IN_PROGRESS") && !subTaskStatuses.contains("DONE")) {
-            epicTask.setStatus("NEW");
+        if (subTaskStatuses.contains(TaskStatus.NEW)
+                && !subTaskStatuses.contains(TaskStatus.IN_PROGRESS) && !subTaskStatuses.contains(TaskStatus.DONE)) {
+            epicTask.setStatus(TaskStatus.NEW);
 
-        } else if (subTaskStatuses.contains("DONE")
-                && !subTaskStatuses.contains("IN_PROGRESS") && !subTaskStatuses.contains("NEW")) {
-            epicTask.setStatus("DONE");
+        } else if (subTaskStatuses.contains(TaskStatus.DONE)
+                && !subTaskStatuses.contains(TaskStatus.IN_PROGRESS) && !subTaskStatuses.contains(TaskStatus.NEW)) {
+            epicTask.setStatus(TaskStatus.DONE);
         } else {
-            epicTask.setStatus("IN_PROGRESS");
+            epicTask.setStatus(TaskStatus.IN_PROGRESS);
         }
     }
     private void addHistoryItem(Task task) {
