@@ -5,6 +5,7 @@ import tasks.SubTask;
 import tasks.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 interface TaskManager {
 
@@ -45,4 +46,6 @@ interface TaskManager {
     void deleteEpicTask(int id);
 
     void deleteSubTask(int id);
+
+    List<Task> getHistory();
 }

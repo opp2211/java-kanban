@@ -6,12 +6,14 @@ import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager{
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, EpicTask> epicTasks = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private int idGenerator = 0;
+    private final List<Task> viewsHistory = new ArrayList<>();
 
     @Override
     public ArrayList<Task> getTasks() {
@@ -74,17 +76,26 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public Task getTask(int id) {
-        return tasks.getOrDefault(id, null);
+        Task task = tasks.getOrDefault(id, null);
+        if (task != null)
+            addHistoryItem(task);
+        return task;
     }
 
     @Override
     public EpicTask getEpicTask(int id) {
-        return epicTasks.getOrDefault(id, null);
+        EpicTask epicTask = epicTasks.getOrDefault(id, null);
+        if (epicTask != null)
+            addHistoryItem(epicTask);
+        return epicTask;
     }
 
     @Override
     public SubTask getSubTask(int id) {
-        return subTasks.getOrDefault(id, null);
+        SubTask subTask = subTasks.getOrDefault(id, null);
+        if (subTask != null)
+            addHistoryItem(subTask);
+        return subTask;
     }
 
     @Override
@@ -193,6 +204,11 @@ public class InMemoryTaskManager implements TaskManager{
         } else System.out.println("Невозможно выполнить операцию");
     }
 
+    @Override
+    public List<Task> getHistory() {
+        return null;
+    }
+
     private void updateEpicTaskStatus(EpicTask epicTask) {
         if (epicTask == null)
             return;
@@ -219,5 +235,12 @@ public class InMemoryTaskManager implements TaskManager{
         } else {
             epicTask.setStatus("IN_PROGRESS");
         }
+    }
+    private void addHistoryItem(Task task) {
+        final int MAX_HISTORY_SIZE = 10;
+        if (viewsHistory.size() == MAX_HISTORY_SIZE) {
+            viewsHistory.remove(0);
+        }
+        viewsHistory.add(task);
     }
 }
