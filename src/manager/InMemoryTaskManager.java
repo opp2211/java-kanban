@@ -207,7 +207,7 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public List<Task> getHistory() {
-        return null;
+        return viewsHistory;
     }
 
     private void updateEpicTaskStatus(EpicTask epicTask) {
