@@ -13,18 +13,22 @@ public class InMemoryTaskManager implements TaskManager{
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private int idGenerator = 0;
 
+    @Override
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
 
+    @Override
     public ArrayList<EpicTask> getEpicTasks() {
         return new ArrayList<>(epicTasks.values());
     }
 
+    @Override
     public ArrayList<SubTask> getSubTasks() {
         return new ArrayList<>(subTasks.values());
     }
 
+    @Override
     public ArrayList<SubTask> getEpicSubTasks(int id) {
         ArrayList<SubTask> epicSubTasks = new ArrayList<>();
         EpicTask epic = epicTasks.get(id);
@@ -34,10 +38,12 @@ public class InMemoryTaskManager implements TaskManager{
         return epicSubTasks;
     }
 
+    @Override
     public void clearTasks() {
         tasks.clear();
     }
 
+    @Override
     public void clearEpicTasks() {
         // При очистке эпиков для начала удаляем сабТаски связанные с этими эпиками
         // Возникает сложная логика, тк мы храним не ссылки на сабТаски, а их айдишники
@@ -50,6 +56,7 @@ public class InMemoryTaskManager implements TaskManager{
         epicTasks.clear();
     }
 
+    @Override
     public void clearSubTasks() {
         // При очистке сабТасков для начала удаляем ссылки на них в эпиках
         for (SubTask subTask : subTasks.values()) {
@@ -65,18 +72,22 @@ public class InMemoryTaskManager implements TaskManager{
         subTasks.clear();
     }
 
+    @Override
     public Task getTask(int id) {
         return tasks.getOrDefault(id, null);
     }
 
+    @Override
     public EpicTask getEpicTask(int id) {
         return epicTasks.getOrDefault(id, null);
     }
 
+    @Override
     public SubTask getSubTask(int id) {
         return subTasks.getOrDefault(id, null);
     }
 
+    @Override
     public int addNewTask(Task task) {
         if (task != null) {
             int newId = idGenerator++;
@@ -89,6 +100,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
+    @Override
     public int addNewEpicTask(EpicTask epicTask) {
         if (epicTask != null) {
             int newId = idGenerator++;
@@ -101,6 +113,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
+    @Override
     public int addNewSubTask(SubTask subTask) {
         if (subTask != null) {
             int newId = idGenerator++;
@@ -120,18 +133,21 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
+    @Override
     public void updateTask(Task task) {
         if (task != null && tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
         }
     }
 
+    @Override
     public void updateEpicTask(EpicTask epicTask) {
         if (epicTask != null && epicTasks.containsKey(epicTask.getId())) {
             epicTasks.put(epicTask.getId(), epicTask);
         }
     }
 
+    @Override
     public void updateSubTask(SubTask subTask) {
         if (subTask != null && subTasks.containsKey(subTask.getId())) {
             subTasks.put(subTask.getId(), subTask);
@@ -142,12 +158,14 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
+    @Override
     public void deleteTask(int id) {
         if (tasks.containsKey(id)) {
             tasks.remove(id);
         } else System.out.println("Невозможно выполнить операцию");
     }
 
+    @Override
     public void deleteEpicTask(int id) {
         if (epicTasks.containsKey(id)) {
             // При удалении эпика удаляем всё связанные саб-таски
@@ -161,6 +179,7 @@ public class InMemoryTaskManager implements TaskManager{
 
     }
 
+    @Override
     public void deleteSubTask(int id) {
         if (subTasks.containsKey(id)) {
             // При удалении саб-таска надо удалить ссылки из его эпика
