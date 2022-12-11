@@ -98,7 +98,7 @@ public class InMemoryTaskManager implements TaskManager {
             task.setId(idGenerator);
             return idGenerator++;
         } else {
-            System.out.println("Невозможно выполнить операцию");
+            System.out.println("Передана пустая ссылка на объект задачи. Добавление задачи не выполнено");
             return -1;
         }
     }
@@ -110,7 +110,7 @@ public class InMemoryTaskManager implements TaskManager {
             epicTask.setId(idGenerator);
             return idGenerator++;
         } else {
-            System.out.println("Невозможно выполнить операцию");
+            System.out.println("Передана пустая ссылка на объект задачи. Добавление задачи не выполнено");
             return -1;
         }
     }
@@ -129,7 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
 
             return idGenerator++;
         } else {
-            System.out.println("Невозможно выполнить операцию");
+            System.out.println("Передана пустая ссылка на объект задачи. Добавление задачи не выполнено");
             return -1;
         }
     }
@@ -161,7 +161,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteTask(int id) {
         if (tasks.containsKey(id)) {
             tasks.remove(id);
-        } else System.out.println("Невозможно выполнить операцию");
+        } else System.out.println("Удаление не выполнено. Запрашиваемый ID не найден.");
     }
 
     @Override
@@ -174,7 +174,7 @@ public class InMemoryTaskManager implements TaskManager {
             }
             // Удаляем сам эпик
             epicTasks.remove(id);
-        } else System.out.println("Невозможно выполнить операцию");
+        } else System.out.println("Удаление не выполнено. Запрашиваемый ID не найден.");
 
     }
 
@@ -189,7 +189,7 @@ public class InMemoryTaskManager implements TaskManager {
             updateEpicTaskStatus(epicTask);
             //Удаляем саму таску
             subTasks.remove(id);
-        } else System.out.println("Невозможно выполнить операцию");
+        } else System.out.println("Удаление не выполнено. Запрашиваемый ID не найден.");
     }
 
     @Override
