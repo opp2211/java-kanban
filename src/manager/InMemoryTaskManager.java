@@ -94,10 +94,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewTask(Task task) {
         if (task != null) {
-            int newId = idGenerator++;
-            tasks.put(newId, task);
-            task.setId(newId);
-            return newId;
+            tasks.put(idGenerator, task);
+            task.setId(idGenerator);
+            return idGenerator++;
         } else {
             System.out.println("Невозможно выполнить операцию");
             return -1;
@@ -107,10 +106,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewEpicTask(EpicTask epicTask) {
         if (epicTask != null) {
-            int newId = idGenerator++;
-            epicTasks.put(newId, epicTask);
-            epicTask.setId(newId);
-            return newId;
+            epicTasks.put(idGenerator, epicTask);
+            epicTask.setId(idGenerator);
+            return idGenerator++;
         } else {
             System.out.println("Невозможно выполнить операцию");
             return -1;
@@ -120,9 +118,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewSubTask(SubTask subTask) {
         if (subTask != null) {
-            int newId = idGenerator++;
-            subTasks.put(newId, subTask);
-            subTask.setId(newId);
+            subTasks.put(idGenerator, subTask);
+            subTask.setId(idGenerator);
 
             // Привязываем сабТаск к эпику
             EpicTask epicTask = epicTasks.get(subTask.getEpicTaskId());
@@ -130,7 +127,7 @@ public class InMemoryTaskManager implements TaskManager {
             // Обновляем статусы эпиков
             updateEpicTaskStatus(epicTask);
 
-            return newId;
+            return idGenerator++;
         } else {
             System.out.println("Невозможно выполнить операцию");
             return -1;
