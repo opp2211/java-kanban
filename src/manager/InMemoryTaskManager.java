@@ -169,9 +169,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epicTasks.containsKey(id)) {
             // При удалении эпика удаляем всё связанные саб-таски
             EpicTask epicTask = epicTasks.get(id);
-            for (Integer subTaskId : epicTask.getSubTaskIds()) {
-                subTasks.remove(subTaskId);
-            }
+            deleteSubTasksFromEpic(epicTask);
             // Удаляем сам эпик
             epicTasks.remove(id);
         } else System.out.println("Удаление не выполнено. Запрашиваемый ID не найден.");
@@ -221,6 +219,12 @@ public class InMemoryTaskManager implements TaskManager {
             epicTask.setStatus(TaskStatus.DONE);
         } else {
             epicTask.setStatus(TaskStatus.IN_PROGRESS);
+        }
+    }
+
+    private void deleteSubTasksFromEpic(EpicTask epicTask) {
+        for (Integer subTaskId : epicTask.getSubTaskIds()) {
+            subTasks.remove(subTaskId);
         }
     }
 }
