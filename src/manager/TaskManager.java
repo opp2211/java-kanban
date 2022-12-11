@@ -4,18 +4,17 @@ import tasks.EpicTask;
 import tasks.SubTask;
 import tasks.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
 
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
-    ArrayList<EpicTask> getEpicTasks();
+    List<EpicTask> getEpicTasks();
 
-    ArrayList<SubTask> getSubTasks();
+    List<SubTask> getSubTasks();
 
-    ArrayList<SubTask> getEpicSubTasks(int id);
+    List<SubTask> getEpicSubTasks(int id);
 
     void clearTasks();
 

@@ -18,22 +18,22 @@ public class InMemoryTaskManager implements TaskManager {
     private int idGenerator = 0;
 
     @Override
-    public ArrayList<Task> getTasks() {
+    public List<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
 
     @Override
-    public ArrayList<EpicTask> getEpicTasks() {
+    public List<EpicTask> getEpicTasks() {
         return new ArrayList<>(epicTasks.values());
     }
 
     @Override
-    public ArrayList<SubTask> getSubTasks() {
+    public List<SubTask> getSubTasks() {
         return new ArrayList<>(subTasks.values());
     }
 
     @Override
-    public ArrayList<SubTask> getEpicSubTasks(int id) {
+    public List<SubTask> getEpicSubTasks(int id) {
         ArrayList<SubTask> epicSubTasks = new ArrayList<>();
         EpicTask epic = epicTasks.get(id);
         for (Integer subTaskId : epic.getSubTaskIds()) {
