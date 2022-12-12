@@ -72,6 +72,7 @@ public class Main {
     }
 
     static void printAllTasks() {
+        System.out.println("Все задачи: ");
         System.out.println(taskManager.getTasks());
         System.out.println(taskManager.getEpicTasks());
         System.out.println(taskManager.getSubTasks());
