@@ -4,7 +4,6 @@ import historyManager.HistoryManager;
 import tasks.EpicTask;
 import tasks.SubTask;
 import tasks.Task;
-import tasks.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +63,7 @@ public class InMemoryTaskManager implements TaskManager {
 
             epicTask.getSubTaskIds().remove(subTaskId);
             // Обновляем статусы эпиков
-            updateEpicTaskStatus(epicTask);
+            epicTask.updateStatus(subTasks);
         }
         // Удаляем сами сабТаски
         subTasks.clear();
@@ -125,7 +124,7 @@ public class InMemoryTaskManager implements TaskManager {
             EpicTask epicTask = epicTasks.get(subTask.getEpicTaskId());
             epicTask.addSubTaskId(subTask.getId());
             // Обновляем статусы эпиков
-            updateEpicTaskStatus(epicTask);
+            epicTask.updateStatus(subTasks);
 
             return idGenerator++;
         } else {
@@ -153,7 +152,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (subTask != null && subTasks.containsKey(subTask.getId())) {
             subTasks.put(subTask.getId(), subTask);
             // Обновляем статус эпика
-            updateEpicTaskStatus(epicTasks.get(subTask.getEpicTaskId()));
+            EpicTask epicTask = epicTasks.get(subTask.getEpicTaskId());
+            epicTask.updateStatus(subTasks);
         }
     }
 
@@ -184,7 +184,7 @@ public class InMemoryTaskManager implements TaskManager {
             EpicTask epicTask = epicTasks.get(epicTaskId);
             epicTask.getSubTaskIds().remove(id);
             // Обновляем статус эпика
-            updateEpicTaskStatus(epicTask);
+            epicTask.updateStatus(subTasks);
             //Удаляем саму таску
             subTasks.remove(id);
         } else System.out.println("Удаление не выполнено. Запрашиваемый ID не найден.");
@@ -193,40 +193,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
-    }
-
-    private void updateEpicTaskStatus(EpicTask epicTask) {
-        /* Комметарий по ревью:
-            мне понравилось предложенное Вами решение, я поппытался его реализовать, но возникла проблема:
-            - т.к. мне порекомендовали хранить в Эпиках не сами подзадачи, а их айдишники, то я не могу рассчитать статус
-            эпика из самого эпика, тк Эпик не имеет доступа к самим подзадачам. Перегружать метод и передавать все саб-
-            таски через параметр метода мне показалось глупо, поэтому я решил оставить прежний подход.
-         */
-
-        if (epicTask == null) return;
-
-        if (epicTask.getSubTaskIds().isEmpty()) {
-            epicTask.setStatus(TaskStatus.NEW);
-            return;
-        }
-
-        ArrayList<TaskStatus> subTaskStatuses = new ArrayList<>(); /* Я не разобрался с коллекцией Set еще, посмотрю
-                                            попозже, но вроде бы она должна быть у нас в курсе через пару спринтов */
-        for (Integer subTaskId : epicTask.getSubTaskIds()) {
-            TaskStatus subTaskStatus = subTasks.get(subTaskId).getStatus();
-            subTaskStatuses.add(subTaskStatus);
-        }
-
-        if (subTaskStatuses.contains(TaskStatus.NEW)
-                && !subTaskStatuses.contains(TaskStatus.IN_PROGRESS) && !subTaskStatuses.contains(TaskStatus.DONE)) {
-            epicTask.setStatus(TaskStatus.NEW);
-
-        } else if (subTaskStatuses.contains(TaskStatus.DONE)
-                && !subTaskStatuses.contains(TaskStatus.IN_PROGRESS) && !subTaskStatuses.contains(TaskStatus.NEW)) {
-            epicTask.setStatus(TaskStatus.DONE);
-        } else {
-            epicTask.setStatus(TaskStatus.IN_PROGRESS);
-        }
     }
 
     private void deleteSubTasksFromEpic(EpicTask epicTask) {
