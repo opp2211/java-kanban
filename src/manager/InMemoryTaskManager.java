@@ -161,6 +161,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteTask(int id) {
         if (tasks.containsKey(id)) {
             tasks.remove(id);
+            historyManager.remove(id);
         } else System.out.println("Удаление не выполнено. Запрашиваемый ID не найден.");
     }
 
@@ -172,6 +173,8 @@ public class InMemoryTaskManager implements TaskManager {
             deleteSubTasksFromEpic(epicTask);
             // Удаляем сам эпик
             epicTasks.remove(id);
+            historyManager.remove(id);
+
         } else System.out.println("Удаление не выполнено. Запрашиваемый ID не найден.");
 
     }
@@ -182,11 +185,12 @@ public class InMemoryTaskManager implements TaskManager {
             // При удалении саб-таска надо удалить ссылки из его эпика
             int epicTaskId = subTasks.get(id).getEpicTaskId();
             EpicTask epicTask = epicTasks.get(epicTaskId);
-            epicTask.getSubTaskIds().remove(id);
+            epicTask.getSubTaskIds().remove((Object)id);
             // Обновляем статус эпика
             epicTask.updateStatus(subTasks);
             //Удаляем саму таску
             subTasks.remove(id);
+            historyManager.remove(id);
         } else System.out.println("Удаление не выполнено. Запрашиваемый ID не найден.");
     }
 
@@ -198,6 +202,7 @@ public class InMemoryTaskManager implements TaskManager {
     private void deleteSubTasksFromEpic(EpicTask epicTask) {
         for (Integer subTaskId : epicTask.getSubTaskIds()) {
             subTasks.remove(subTaskId);
+            historyManager.remove(subTaskId);
         }
     }
 }

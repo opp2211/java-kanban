@@ -3,26 +3,78 @@ package historyManager;
 import tasks.Task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static final int MAX_HISTORY_SIZE = 10;
-    private final List<Task> viewsHistory;
+    private static class Node {
+        Node prev;
+        Node next;
+        Task data;
 
-    public InMemoryHistoryManager() {
-        viewsHistory = new ArrayList<>();
+        public Node(Task data, Node prev, Node next) {
+            this.data = data;
+            this.prev = prev;
+            this.next = next;
+        }
+
+    }
+    private final Map<Integer, Node> nodeMap = new HashMap<>();
+    Node head;
+    Node tail;
+
+    private void linkLast(Task task) {
+        Node node = new Node(task, tail, null);
+        if (tail == null) {
+            head = node;
+        } else {
+            tail.next = node;
+        }
+        tail = node;
+        nodeMap.put(task.getId(), node);
+    }
+
+    private void removeNode(Node node) {
+        if (node == null)
+            return;
+        if (node == head) {
+            if (node != tail)
+                node.next.prev = null;
+            else
+                tail = null;
+            head = node.next;
+        } else if (node == tail) {
+            node.prev.next = null;
+            tail = node.prev;
+        } else {
+            node.next.prev = node.prev;
+            node.prev.next = node.next;
+        }
+    }
+
+    @Override
+    public void remove(int id) {
+        Node node = nodeMap.remove(id);
+        removeNode(node);
     }
 
     @Override
     public void add(Task task) {
-        if (viewsHistory.size() == MAX_HISTORY_SIZE) {
-            viewsHistory.remove(0);
-        }
-        viewsHistory.add(task);
+        remove(task.getId());
+        linkLast(task);
     }
 
     @Override
     public List<Task> getHistory() {
-        return viewsHistory;
+        List<Task> list = new ArrayList<>();
+        Node node = head;
+        while (node != null){
+            list.add(node.data);
+            node = node.next;
+        }
+        return list;
     }
+
+
 }

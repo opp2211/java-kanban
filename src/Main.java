@@ -23,7 +23,7 @@ public class Main {
                 new Task("Лечь спать", "Выспаться перед сложным днем", TaskStatus.valueOf("NEW"))
         );
 
-        // Создаем эпик с двумя подзадачами
+        // Создаем эпик с тремя подзадачами
         int epicId1 = taskManager.addNewEpicTask(
                 new EpicTask("Переезд", "")
         );
@@ -33,41 +33,41 @@ public class Main {
         taskManager.addNewSubTask(
                 new SubTask("Упаковать кошку", "2", TaskStatus.valueOf("NEW"), epicId1)
         );
-
-        // Создаем эпик с 1 подзадачей
-        int epicId2 = taskManager.addNewEpicTask(
-                new EpicTask("Второй эпик", "")
-        );
         taskManager.addNewSubTask(
-                new SubTask("Подзадача второго эпика", "2222", TaskStatus.valueOf("DONE"), epicId2)
+                new SubTask("3333", "3", TaskStatus.valueOf("NEW"), epicId1)
+        );
+
+        // Создаем эпик без подзадач
+        taskManager.addNewEpicTask(
+                new EpicTask("Второй эпик", "")
         );
 
         printAllTasks(); // Выводим все задачи
         printHistory(); // Выводим историю (пустую)
 
-        taskManager.getSubTask(4); // Вызываем подзадачу для записи в историю
-        taskManager.updateSubTask(
-                new SubTask(4, "Упаковать кошку", "22222", TaskStatus.valueOf("DONE"), epicId1)
-        ); // Меняем данные первой подзадачи первого эпика
-        taskManager.getSubTask(4); // Вызываем подзадачу для записи в историю
-
-        printAllTasks(); // Наблюдаем за результатом
-        printHistory();
-
+        //Вызываем все задачи и смотрим историю
         taskManager.getTask(0);
-        taskManager.deleteTask(0);
-
-        printHistory();
-
+        taskManager.getTask(1);
         taskManager.getEpicTask(2);
-        taskManager.deleteEpicTask(2);
-
-        printAllTasks(); // Наблюдаем за результатом
+        taskManager.getSubTask(3);
+        taskManager.getSubTask(4);
+        taskManager.getSubTask(5);
+        taskManager.getEpicTask(6);
         printHistory();
 
-        for (int i = 0; i < 10; i++) {
-            taskManager.getTask(1);
-        }
+        //Вызываем задачи и смотрим историю (на порядок и наличие повторов)
+        taskManager.getEpicTask(2);
+        taskManager.getTask(0);
+        taskManager.getSubTask(4);
+        printHistory();
+
+        //Удяляем задачи и смотрим историю
+        taskManager.deleteTask(1);
+        taskManager.deleteSubTask(5);
+        printHistory();
+
+        //Удяляем эпик и смотрим историю
+        taskManager.deleteEpicTask(2);
         printHistory();
     }
 
