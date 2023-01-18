@@ -1,7 +1,7 @@
 package manager;
 
-import historyManager.HistoryManager;
-import historyManager.InMemoryHistoryManager;
+import historymanager.HistoryManager;
+import historymanager.InMemoryHistoryManager;
 
 public class Managers {
 

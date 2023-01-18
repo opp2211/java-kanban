@@ -1,6 +1,6 @@
 package manager;
 
-import historyManager.HistoryManager;
+import historymanager.HistoryManager;
 import tasks.EpicTask;
 import tasks.SubTask;
 import tasks.Task;
@@ -71,21 +71,21 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTask(int id) {
-        Task task = tasks.getOrDefault(id, null);
+        Task task = tasks.get(id);
         if (task != null) historyManager.add(task);
         return task;
     }
 
     @Override
     public EpicTask getEpicTask(int id) {
-        EpicTask epicTask = epicTasks.getOrDefault(id, null);
+        EpicTask epicTask = epicTasks.get(id);
         if (epicTask != null) historyManager.add(epicTask);
         return epicTask;
     }
 
     @Override
     public SubTask getSubTask(int id) {
-        SubTask subTask = subTasks.getOrDefault(id, null);
+        SubTask subTask = subTasks.get(id);
         if (subTask != null) historyManager.add(subTask);
         return subTask;
     }
