@@ -20,13 +20,13 @@ public class Main {
         int task2Id = taskManager.addNewTask(new Task("Лечь спать", "Выспаться перед сложным днем", TaskStatus.valueOf("NEW")));
 
         // Создаем эпик с тремя подзадачами
-        int epic1Id = taskManager.addNewEpicTask(new EpicTask("Переезд", ""));
+        int epic1Id = taskManager.addNewEpicTask(new EpicTask("Переезд", " "));
         int subtask1Id = taskManager.addNewSubTask(new SubTask("Собрать коробки", "1", TaskStatus.valueOf("DONE"), epic1Id));
         int subtask2Id = taskManager.addNewSubTask(new SubTask("Упаковать кошку", "2", TaskStatus.valueOf("NEW"), epic1Id));
         int subtask3Id = taskManager.addNewSubTask(new SubTask("3333", "3", TaskStatus.valueOf("NEW"), epic1Id));
 
         // Создаем эпик без подзадач
-        int epic2Id = taskManager.addNewEpicTask(new EpicTask("Второй эпик", ""));
+        int epic2Id = taskManager.addNewEpicTask(new EpicTask("Второй эпик", " "));
 
         printAllTasks(); // Выводим все задачи
         printHistory(); // Выводим историю (пустую)

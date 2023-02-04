@@ -5,24 +5,21 @@ import tasks.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CSVTaskFormat {
     public static String taskToString(Task task) {
-        StringBuilder result = new StringBuilder();
-        result.append(task.getId());
-        result.append(",");
-        result.append(task.getTaskType());
-        result.append(",");
-        result.append(task.getName());
-        result.append(",");
-        result.append(task.getStatus());
-        result.append(",");
-        result.append(task.getDescription());
+        List<String> listToJoin = new ArrayList<>();
+        listToJoin.add(task.getId().toString());
+        listToJoin.add(task.getTaskType().toString());
+        listToJoin.add(task.getName());
+        listToJoin.add(task.getStatus().toString());
+        listToJoin.add(task.getDescription());
         if (task.getClass() == SubTask.class) {
-            result.append(",");
-            result.append(((SubTask)task).getEpicTaskId());
+            Integer id = ((SubTask) task).getEpicTaskId();
+            listToJoin.add(id.toString());
         }
-        return result.toString();
+        return String.join(",", listToJoin);
     }
     public static Task taskFromString(String str) {
         Task task;
@@ -48,13 +45,10 @@ public class CSVTaskFormat {
         return task;
     }
     public static String historyToString(HistoryManager historyManager) {
-        StringBuilder result = new StringBuilder();
-        for (Task task : historyManager.getHistory()) {
-            if (result.length() != 0)
-                result.append(",");
-            result.append(task.getId());
-        }
-        return result.toString();
+        return historyManager.getHistory()
+                .stream()
+                .map(task -> task.getId().toString())
+                .collect(Collectors.joining(","));
     }
     public static List<Integer> historyFromString(String str) {
         List<Integer> list = new ArrayList<>();

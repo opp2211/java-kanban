@@ -13,7 +13,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
 
     public static void main(String[] args) {
-        TaskManager taskManager1 = FileBackedTaskManager.loadFromFile(new File("taskManagerData.csv"));
+        TaskManager taskManager1 = Managers.getDefault();
 
         // Создаем 2 задачи
         int task1Id = taskManager1.addNewTask(new Task("Написать код", "Выполнить финалку 3 спринта", TaskStatus.valueOf("IN_PROGRESS")));
@@ -38,7 +38,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         taskManager1.getSubTask(subtask1Id);
         printHistory(taskManager1);
 
-        TaskManager taskManager2 = FileBackedTaskManager.loadFromFile(new File("taskManagerData.csv"));
+        TaskManager taskManager2 = Managers.getDefault();
         printAllTasks(taskManager2);
         printHistory(taskManager2);
     }
@@ -78,6 +78,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
     public static FileBackedTaskManager loadFromFile(File file) {
+        if (!file.exists())
+            return new FileBackedTaskManager(file);
         int maxId = 0;
         FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -113,9 +115,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 taskManager.historyManager.add(task);
             }
             taskManager.idGenerator = maxId + 1;
-        } catch (FileNotFoundException ex) {
-            System.out.println("Файл " + file + " не существует, создан пустой менеджер");
-            return taskManager;
         } catch (IOException ex) {
             throw new ManagerSaveException("Ошибка загрузки");
         }
