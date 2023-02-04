@@ -2,18 +2,21 @@ package tasks;
 
 public class Task {
     protected Integer id;
+    protected TaskType taskType;
     protected String name;
     protected String description;
     protected TaskStatus status;
 
     public Task(Integer id, String name, String description, TaskStatus status) {
         this.id = id;
+        this.taskType = TaskType.TASK;
         this.name = name;
         this.description = description;
         this.status = status;
     }
 
     public Task(String name, String description, TaskStatus status) {
+        this.taskType = TaskType.TASK;
         this.name = name;
         this.description = description;
         this.status = status;
@@ -26,7 +29,9 @@ public class Task {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    public TaskType getTaskType() {
+        return taskType;
+    }
     public String getName() {
         return name;
     }
