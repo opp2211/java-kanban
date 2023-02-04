@@ -64,6 +64,12 @@ public class InMemoryHistoryManager implements HistoryManager {
         remove(task.getId());
         linkLast(task);
     }
+    @Override
+    public void clear() {
+        nodeMap.clear();
+        head = null;
+        tail = null;
+    }
 
     @Override
     public List<Task> getHistory() {

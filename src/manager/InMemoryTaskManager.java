@@ -43,13 +43,22 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void clearTasks() {
-        tasks.clear();
+        for (var task : tasks.values()) {
+            historyManager.remove(task.getId());
+        }
+            tasks.clear();
     }
 
     @Override
     public void clearEpicTasks() {
         // При очистке эпиков для начала удаляем сабТаски связанные с этими эпиками
+        for (var task : subTasks.values()) {
+            historyManager.remove(task.getId());
+        }
         subTasks.clear();
+        for (var task : epicTasks.values()) {
+            historyManager.remove(task.getId());
+        }
         epicTasks.clear();
     }
 
@@ -66,6 +75,9 @@ public class InMemoryTaskManager implements TaskManager {
             epicTask.updateStatus(subTasks);
         }
         // Удаляем сами сабТаски
+        for (var task : subTasks.values()) {
+            historyManager.remove(task.getId());
+        }
         subTasks.clear();
     }
 
