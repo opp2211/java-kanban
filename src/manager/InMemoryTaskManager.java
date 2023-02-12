@@ -155,6 +155,12 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateEpicTask(EpicTask epicTask) {
         if (epicTask != null && epicTasks.containsKey(epicTask.getId())) {
+            //Перепривязываем сабстаски к новому эпику
+            List<Integer> oldEpicSubTaskIds = epicTasks.get(epicTask.getId()).getSubTaskIds();
+            for (Integer subTaskId : oldEpicSubTaskIds) {
+                epicTask.addSubTaskId(subTaskId);
+            }
+            epicTask.updateStatus(subTasks);
             epicTasks.put(epicTask.getId(), epicTask);
         }
     }

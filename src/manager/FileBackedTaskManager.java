@@ -128,6 +128,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
     private void addSubTask (SubTask subTask) {
         subTasks.put(subTask.getId(), subTask);
+        //Привязываем сабТаск к эпику и обновляем статус эпика
+        EpicTask epicTask = epicTasks.get(subTask.getEpicTaskId());
+        epicTask.addSubTaskId(subTask.getId());
+        epicTask.updateStatus(subTasks);
     }
     @Override
     public Task getTask(int id) {
