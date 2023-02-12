@@ -66,12 +66,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void clearSubTasks() {
         // При очистке сабТасков для начала удаляем ссылки на них в эпиках
-        for (SubTask subTask : subTasks.values()) {
-            int epicId = subTask.getEpicTaskId();
-            int subTaskId = subTask.getId();
-            EpicTask epicTask = epicTasks.get(epicId);
-
-            epicTask.getSubTaskIds().remove(subTaskId);
+        for (EpicTask epicTask : epicTasks.values()) {
+            epicTask.getSubTaskIds().clear();
             // Обновляем статусы эпиков
             epicTask.updateStatus(subTasks);
         }
