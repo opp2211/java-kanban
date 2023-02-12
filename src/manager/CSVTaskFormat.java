@@ -33,7 +33,7 @@ public class CSVTaskFormat {
                 task = new Task(Integer.parseInt(split[0]), split[2], split[4], TaskStatus.valueOf(split[3]));
                 break;
             case EPIC_TASK:
-                task = new EpicTask(Integer.parseInt(split[0]), split[2], split[4], TaskStatus.valueOf(split[3]));
+                task = new EpicTask(Integer.parseInt(split[0]), split[2], split[4]);
                 break;
             case SUB_TASK:
                 task = new SubTask(Integer.parseInt(split[0]), split[2], split[4], TaskStatus.valueOf(split[3]),
