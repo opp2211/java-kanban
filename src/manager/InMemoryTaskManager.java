@@ -39,7 +39,13 @@ public class InMemoryTaskManager implements TaskManager {
             for (Integer subTaskId : epic.getSubTaskIds()) {
                 epicSubTasks.add(subTasks.get(subTaskId));
             }
-        return epicSubTasks;
+            return epicSubTasks;
+        }
+        else {
+            System.out.println("getEpicSubTasks: ID переданного эпика не существует, " +
+                    "вывод списка сабтасков определенного эпика не выполнен");
+            return null;
+        }
     }
 
     @Override
@@ -81,21 +87,30 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTask(int id) {
         Task task = tasks.get(id);
-        if (task != null) historyManager.add(task);
+        if (task != null)
+            historyManager.add(task);
+        else
+            System.out.println("getTask: Задача с переданным ID не существует");
         return task;
     }
 
     @Override
     public EpicTask getEpicTask(int id) {
         EpicTask epicTask = epicTasks.get(id);
-        if (epicTask != null) historyManager.add(epicTask);
+        if (epicTask != null)
+            historyManager.add(epicTask);
+        else
+            System.out.println("getEpicTask: Эпик с переданным ID не существует");
         return epicTask;
     }
 
     @Override
     public SubTask getSubTask(int id) {
         SubTask subTask = subTasks.get(id);
-        if (subTask != null) historyManager.add(subTask);
+        if (subTask != null)
+            historyManager.add(subTask);
+        else
+            System.out.println("getSubTask: Подзадача с переданным ID не существует");
         return subTask;
     }
 
@@ -106,7 +121,7 @@ public class InMemoryTaskManager implements TaskManager {
             task.setId(idGenerator);
             return idGenerator++;
         } else {
-            System.out.println("Передана пустая ссылка на объект задачи. Добавление задачи не выполнено");
+            System.out.println("addNewTask: Передана пустая ссылка на объект задачи. Добавление задачи не выполнено");
             return -1;
         }
     }
@@ -118,7 +133,7 @@ public class InMemoryTaskManager implements TaskManager {
             epicTask.setId(idGenerator);
             return idGenerator++;
         } else {
-            System.out.println("Передана пустая ссылка на объект задачи. Добавление задачи не выполнено");
+            System.out.println("addNewEpicTask: Передана пустая ссылка на объект задачи. Добавление задачи не выполнено");
             return -1;
         }
     }
@@ -126,18 +141,23 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewSubTask(SubTask subTask) {
         if (subTask != null) {
-            subTasks.put(idGenerator, subTask);
-            subTask.setId(idGenerator);
-
-            // Привязываем сабТаск к эпику
             EpicTask epicTask = epicTasks.get(subTask.getEpicTaskId());
-            epicTask.addSubTaskId(subTask.getId());
-            // Обновляем статусы эпиков
-            epicTask.updateStatus(subTasks);
+            if (epicTask != null) {
+                subTasks.put(idGenerator, subTask);
+                subTask.setId(idGenerator);
+                // Привязываем сабТаск к эпику
+                epicTask.addSubTaskId(subTask.getId());
+                // Обновляем статусы эпиков
+                epicTask.updateStatus(subTasks);
 
-            return idGenerator++;
+                return idGenerator++;
+            }
+            else {
+                System.out.println("addNewSubTask: Передан неверный эпик ID. Добавление задачи не выполнено");
+                return -1;
+            }
         } else {
-            System.out.println("Передана пустая ссылка на объект задачи. Добавление задачи не выполнено");
+            System.out.println("addNewSubTask: Передана пустая ссылка на объект задачи. Добавление задачи не выполнено");
             return -1;
         }
     }
@@ -177,7 +197,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (tasks.containsKey(id)) {
             tasks.remove(id);
             historyManager.remove(id);
-        } else System.out.println("Удаление не выполнено. Запрашиваемый ID не найден.");
+        } else System.out.println("deleteTask: Удаление не выполнено. Запрашиваемый ID не найден.");
     }
 
     @Override
@@ -190,7 +210,7 @@ public class InMemoryTaskManager implements TaskManager {
             epicTasks.remove(id);
             historyManager.remove(id);
 
-        } else System.out.println("Удаление не выполнено. Запрашиваемый ID не найден.");
+        } else System.out.println("deleteEpicTask: Удаление не выполнено. Запрашиваемый ID не найден.");
 
     }
 
@@ -206,7 +226,7 @@ public class InMemoryTaskManager implements TaskManager {
             //Удаляем саму таску
             subTasks.remove(id);
             historyManager.remove(id);
-        } else System.out.println("Удаление не выполнено. Запрашиваемый ID не найден.");
+        } else System.out.println("deleteSubTask: Удаление не выполнено. Запрашиваемый ID не найден.");
     }
 
     @Override
