@@ -52,10 +52,11 @@ public class CSVTaskFormat {
     }
     public static List<Integer> historyFromString(String str) {
         List<Integer> list = new ArrayList<>();
-
-        String[] split = str.split(",");
-        for (String item : split) {
-            list.add(Integer.parseInt(item));
+        if (str != null) {
+            String[] split = str.split(",");
+            for (String item : split) {
+                list.add(Integer.parseInt(item));
+            }
         }
         return list;
     }
