@@ -8,6 +8,7 @@ import tasks.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
@@ -35,7 +36,7 @@ public class InMemoryTaskManager implements TaskManager {
     public List<SubTask> getEpicSubTasks(int id) {
         ArrayList<SubTask> epicSubTasks = new ArrayList<>();
         EpicTask epic = epicTasks.get(id);
-        if (epic != null)
+        if (epic != null) {
             for (Integer subTaskId : epic.getSubTaskIds()) {
                 epicSubTasks.add(subTasks.get(subTaskId));
             }
@@ -239,5 +240,18 @@ public class InMemoryTaskManager implements TaskManager {
             subTasks.remove(subTaskId);
             historyManager.remove(subTaskId);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InMemoryTaskManager that = (InMemoryTaskManager) o;
+        return idGenerator == that.idGenerator && getTasks().equals(that.getTasks()) && getEpicTasks().equals(that.getEpicTasks()) && getSubTasks().equals(that.getSubTasks()) && historyManager.equals(that.historyManager);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTasks(), getEpicTasks(), getSubTasks(), historyManager, idGenerator);
     }
 }

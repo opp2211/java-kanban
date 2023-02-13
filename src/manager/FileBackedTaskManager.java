@@ -8,6 +8,7 @@ import tasks.TaskStatus;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
@@ -198,5 +199,37 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void deleteSubTask(int id) {
         super.deleteSubTask(id);
         save();
+    }
+
+    @Override
+    public void clearTasks() {
+        super.clearTasks();
+        save();
+    }
+
+    @Override
+    public void clearEpicTasks() {
+        super.clearEpicTasks();
+        save();
+    }
+
+    @Override
+    public void clearSubTasks() {
+        super.clearSubTasks();
+        save();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        FileBackedTaskManager that = (FileBackedTaskManager) o;
+        return file.equals(that.file);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), file);
     }
 }

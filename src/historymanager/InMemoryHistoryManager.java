@@ -2,10 +2,7 @@ package historymanager;
 
 import tasks.Task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private static class Node {
@@ -81,6 +78,16 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         return list;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InMemoryHistoryManager that = (InMemoryHistoryManager) o;
+        return nodeMap.equals(that.nodeMap) && Objects.equals(head, that.head) && Objects.equals(tail, that.tail);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(nodeMap, head, tail);
+    }
 }
