@@ -37,13 +37,13 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
     }
     @Test
     public void LoadManagerWithSomeTasksAndHistory() {
-        int task1 = taskManager.addNewTask(new Task("Test task 1", "Test task 1 description", TaskStatus.DONE));
-        int task2 = taskManager.addNewTask(new Task("Test task 2", "Test task 2 description", TaskStatus.NEW));
+        int task1 = taskManager.addNewTask(new Task("Test task 1", "Test task 1 description", TaskStatus.DONE, 0, null));
+        int task2 = taskManager.addNewTask(new Task("Test task 2", "Test task 2 description", TaskStatus.NEW, 0, null));
         int epicTask1Id = taskManager.addNewEpicTask(new EpicTask("Test epicTask 1", "Test task 1 description"));
         int subTask1Id = taskManager.addNewSubTask(new SubTask("Test SubTask 1"
-                , "Test SubTask 1 description", TaskStatus.NEW, epicTask1Id));
+                , "Test SubTask 1 description", TaskStatus.NEW, epicTask1Id, 0, null));
         int subTask2Id = taskManager.addNewSubTask(new SubTask("Test SubTask 2"
-                , "Test SubTask 2 description", TaskStatus.IN_PROGRESS, epicTask1Id));
+                , "Test SubTask 2 description", TaskStatus.IN_PROGRESS, epicTask1Id, 0, null));
 
         //Вызываем задачи для заполнения истории
         taskManager.getTask(task2);

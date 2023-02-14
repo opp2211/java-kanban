@@ -5,7 +5,11 @@ import tasks.SubTask;
 import tasks.Task;
 import tasks.TaskStatus;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Main {
+    public static final DateTimeFormatter DT_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy--HH:mm");
     static TaskManager taskManager = Managers.getDefault();
 
     public static void main(String[] args) {
@@ -16,14 +20,14 @@ public class Main {
     public static void executeTest() {
 
         // Создаем 2 задачи
-        int task1Id = taskManager.addNewTask(new Task("Написать код", "Выполнить финалку 3 спринта", TaskStatus.valueOf("IN_PROGRESS")));
-        int task2Id = taskManager.addNewTask(new Task("Лечь спать", "Выспаться перед сложным днем", TaskStatus.valueOf("NEW")));
+        int task1Id = taskManager.addNewTask(new Task("Написать код", "Выполнить финалку 3 спринта", TaskStatus.valueOf("IN_PROGRESS"), 59, LocalDateTime.parse("13-02-2023--03:00", DT_FORMATTER)));
+        int task2Id = taskManager.addNewTask(new Task("Лечь спать", "Выспаться перед сложным днем", TaskStatus.valueOf("NEW"), 59, LocalDateTime.parse("13-02-2023--04:00", DT_FORMATTER)));
 
         // Создаем эпик с тремя подзадачами
         int epic1Id = taskManager.addNewEpicTask(new EpicTask("Переезд", " "));
-        int subtask1Id = taskManager.addNewSubTask(new SubTask("Собрать коробки", "1", TaskStatus.valueOf("DONE"), epic1Id));
-        int subtask2Id = taskManager.addNewSubTask(new SubTask("Упаковать кошку", "2", TaskStatus.valueOf("NEW"), epic1Id));
-        int subtask3Id = taskManager.addNewSubTask(new SubTask("3333", "3", TaskStatus.valueOf("NEW"), epic1Id));
+        int subtask1Id = taskManager.addNewSubTask(new SubTask("Собрать коробки", "1", TaskStatus.valueOf("DONE"), epic1Id, 29, LocalDateTime.parse("13-02-2023--12:00", DT_FORMATTER)));
+        int subtask2Id = taskManager.addNewSubTask(new SubTask("Упаковать кошку", "2", TaskStatus.valueOf("NEW"), epic1Id, 50, LocalDateTime.parse("13-02-2023--12:10", DT_FORMATTER)));
+        int subtask3Id = taskManager.addNewSubTask(new SubTask("3333", "3", TaskStatus.valueOf("NEW"), epic1Id, 90, LocalDateTime.parse("13-02-2023--12:30", DT_FORMATTER)));
 
         // Создаем эпик без подзадач
         int epic2Id = taskManager.addNewEpicTask(new EpicTask("Второй эпик", " "));
@@ -55,6 +59,7 @@ public class Main {
         //Удяляем эпик и смотрим историю
         taskManager.deleteEpicTask(epic1Id);
         printHistory();
+        printAllTasks();
     }
 
     static void printAllTasks() {
@@ -62,6 +67,8 @@ public class Main {
         System.out.println(taskManager.getTasks());
         System.out.println(taskManager.getEpicTasks());
         System.out.println(taskManager.getSubTasks());
+        System.out.println("Приоритизированный список: ");
+        System.out.println(taskManager.getPrioritizedTasks());
         System.out.println();
     }
 

@@ -17,12 +17,12 @@ public class InMemoryHistoryManagerTest {
     }
     @Test
     public void addTask() {
-        historyManager.add(new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW));
+        historyManager.add(new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null));
         assertEquals(1, historyManager.getHistory().size());
     }
     @Test
     public void addSameTaskTwice() {
-        Task task = new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW);
+        Task task = new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null);
         historyManager.add(task);
         historyManager.add(task);
 
@@ -30,9 +30,9 @@ public class InMemoryHistoryManagerTest {
     }
     @Test
     public void removeFirst() {
-        Task task1 = new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW);
-        Task task2 = new Task(1,"Test task 2", "Test task 2 description", TaskStatus.NEW);
-        Task task3 = new Task(2,"Test task 3", "Test task 3 description", TaskStatus.NEW);
+        Task task1 = new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null);
+        Task task2 = new Task(1,"Test task 2", "Test task 2 description", TaskStatus.NEW, 0, null);
+        Task task3 = new Task(2,"Test task 3", "Test task 3 description", TaskStatus.NEW, 0, null);
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task3);
@@ -45,9 +45,9 @@ public class InMemoryHistoryManagerTest {
     }
     @Test
     public void removeMiddle() {
-        Task task1 = new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW);
-        Task task2 = new Task(1,"Test task 2", "Test task 2 description", TaskStatus.NEW);
-        Task task3 = new Task(2,"Test task 3", "Test task 3 description", TaskStatus.NEW);
+        Task task1 = new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null);
+        Task task2 = new Task(1,"Test task 2", "Test task 2 description", TaskStatus.NEW, 0, null);
+        Task task3 = new Task(2,"Test task 3", "Test task 3 description", TaskStatus.NEW, 0, null);
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task3);
@@ -60,9 +60,9 @@ public class InMemoryHistoryManagerTest {
     }
     @Test
     public void removeLast() {
-        Task task1 = new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW);
-        Task task2 = new Task(1,"Test task 2", "Test task 2 description", TaskStatus.NEW);
-        Task task3 = new Task(2,"Test task 3", "Test task 3 description", TaskStatus.NEW);
+        Task task1 = new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null);
+        Task task2 = new Task(1,"Test task 2", "Test task 2 description", TaskStatus.NEW, 0, null);
+        Task task3 = new Task(2,"Test task 3", "Test task 3 description", TaskStatus.NEW, 0, null);
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task3);
@@ -75,7 +75,7 @@ public class InMemoryHistoryManagerTest {
     }
     @Test
     public void removeWrongTaskId() {
-        Task task = new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW);
+        Task task = new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null);
         historyManager.add(task);
         historyManager.remove(NON_EXIST_TASK_ID);
 
@@ -84,15 +84,15 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void getHistory() {
-        historyManager.add(new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW));
-        historyManager.add(new Task(1,"Test task 2", "Test task 2 description", TaskStatus.NEW));
+        historyManager.add(new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null));
+        historyManager.add(new Task(1,"Test task 2", "Test task 2 description", TaskStatus.NEW, 0, null));
 
         assertEquals(2, historyManager.getHistory().size());
     }
     @Test
     public void clear() {
-        historyManager.add(new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW));
-        historyManager.add(new Task(1,"Test task 2", "Test task 2 description", TaskStatus.NEW));
+        historyManager.add(new Task(0,"Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null));
+        historyManager.add(new Task(1,"Test task 2", "Test task 2 description", TaskStatus.NEW, 0, null));
         historyManager.clear();
 
         assertEquals(0, historyManager.getHistory().size());

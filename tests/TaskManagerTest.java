@@ -14,7 +14,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     protected T taskManager;
     @Test
     public void getTasks() {
-        Task task = new Task("Test task 1", "Test task 1 description", TaskStatus.NEW);
+        Task task = new Task("Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null);
         taskManager.addNewTask(task);
         List<Task> tasks = taskManager.getTasks();
 
@@ -49,7 +49,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void getSubTasks() {
         int epicId = taskManager.addNewEpicTask(new EpicTask("Test epicTask 1", "Test task 1 description"));
-        SubTask subTask = new SubTask("Test SubTask 1", "Test SubTask 1 description", TaskStatus.NEW, epicId);
+        SubTask subTask = new SubTask("Test SubTask 1", "Test SubTask 1 description", TaskStatus.NEW, epicId, 0, null);
         taskManager.addNewSubTask(subTask);
         List<SubTask> subTasks = taskManager.getSubTasks();
 
@@ -68,7 +68,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void getEpicSubTasks() {
         int epicId = taskManager.addNewEpicTask(new EpicTask("Test epicTask 1", "Test task 1 description"));
-        SubTask subTask = new SubTask("Test SubTask 1", "Test SubTask 1 description", TaskStatus.NEW, epicId);
+        SubTask subTask = new SubTask("Test SubTask 1", "Test SubTask 1 description", TaskStatus.NEW, epicId, 0, null);
         taskManager.addNewSubTask(subTask);
         List<SubTask> subTasks = taskManager.getEpicSubTasks(epicId);
 
@@ -93,7 +93,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void clearTasks() {
-        taskManager.addNewTask(new Task("Test task 1", "Test task 1 description", TaskStatus.NEW));
+        taskManager.addNewTask(new Task("Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null));
         taskManager.clearTasks();
 
         assertNotNull(taskManager.getTasks());
@@ -126,7 +126,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void clearSubTasks() {
         int epicId = taskManager.addNewEpicTask(new EpicTask("Test epicTask 1", "Test epicTask 1 description"));
-        taskManager.addNewSubTask(new SubTask("Test SubTask 1", "Test SubTask 1 description", TaskStatus.NEW, epicId));
+        taskManager.addNewSubTask(new SubTask("Test SubTask 1", "Test SubTask 1 description", TaskStatus.NEW, epicId, 0, null));
         taskManager.clearSubTasks();
 
         assertNotNull(taskManager.getSubTasks());
@@ -145,7 +145,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
     @Test
     public void getTask() {
-        Task task = new Task("Test task 1", "Test task 1 description", TaskStatus.NEW);
+        Task task = new Task("Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null);
         int taskId = taskManager.addNewTask(task);
 
         assertEquals(task, taskManager.getTask(taskId));
@@ -153,7 +153,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
     @Test
     public void getTaskWithWrongId() {
-        Task task = new Task("Test task 1", "Test task 1 description", TaskStatus.NEW);
+        Task task = new Task("Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null);
         taskManager.addNewTask(task);
 
         assertNull(taskManager.getTask(NON_EXIST_TASK_ID));
@@ -179,7 +179,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 new EpicTask("Test epicTask 1", "Test epicTask 1 description")
         );
         SubTask subTask = new SubTask("Test SubTask 1"
-                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId);
+                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId, 0, null);
         int subTaskId = taskManager.addNewSubTask(subTask);
 
         assertEquals(subTask, taskManager.getSubTask(subTaskId));
@@ -191,7 +191,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 new EpicTask("Test epicTask 1", "Test epicTask 1 description")
         );
         SubTask subTask = new SubTask("Test SubTask 1"
-                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId);
+                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId, 0, null);
         taskManager.addNewSubTask(subTask);
 
         assertNull(taskManager.getSubTask(NON_EXIST_TASK_ID));
@@ -199,7 +199,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void addNewTask() {
-        Task task = new Task("Test task 1", "Test task 1 description", TaskStatus.NEW);
+        Task task = new Task("Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null);
         int taskId = taskManager.addNewTask(task);
 
         assertNotNull(taskManager.getTask(taskId));
@@ -237,7 +237,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 new EpicTask("Test epicTask 1", "Test epicTask 1 description")
         );
         SubTask subTask = new SubTask("Test SubTask 1"
-                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId);
+                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId, 0, null);
         int subTaskId = taskManager.addNewSubTask(subTask);
 
         assertNotNull(taskManager.getSubTask(subTaskId));
@@ -255,7 +255,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void addNewSubTaskWithWrongEpicId() {
         SubTask subTask = new SubTask("Test SubTask 1"
-                , "Test SubTask 1 description", TaskStatus.NEW, NON_EXIST_TASK_ID);
+                , "Test SubTask 1 description", TaskStatus.NEW, NON_EXIST_TASK_ID, 0, null);
         int subTaskId = taskManager.addNewSubTask(subTask);
 
         assertNull(taskManager.getSubTask(subTaskId));
@@ -266,10 +266,10 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void updateTask() {
         int taskId = taskManager.addNewTask(
-                new Task("Test task 1", "Test task 1 description", TaskStatus.NEW)
+                new Task("Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null)
         );
         Task updatedTask = new Task(taskId, "Updated test task 1", "Updated test task 1 description"
-                , TaskStatus.IN_PROGRESS);
+                , TaskStatus.IN_PROGRESS, 0, null);
         taskManager.updateTask(updatedTask);
 
         assertEquals(updatedTask, taskManager.getTask(taskId));
@@ -298,9 +298,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 new EpicTask("Test epicTask 1", "Test epicTask 1 description")
         );
         int subTaskId = taskManager.addNewSubTask(new SubTask("Test SubTask 1"
-                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId));
+                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId, 0, null));
         SubTask updatedSubTask = new SubTask(subTaskId,"Updated test SubTask 1"
-                , "Updated test SubTask 1 description", TaskStatus.IN_PROGRESS, epicTaskId);
+                , "Updated test SubTask 1 description", TaskStatus.IN_PROGRESS, epicTaskId, 0, null);
         taskManager.updateSubTask(updatedSubTask);
 
         assertEquals(updatedSubTask, taskManager.getSubTask(subTaskId));
@@ -312,7 +312,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void deleteTask() {
-        Task task = new Task("Test task 1", "Test task 1 description", TaskStatus.NEW);
+        Task task = new Task("Test task 1", "Test task 1 description", TaskStatus.NEW, 0, null);
         int taskId = taskManager.addNewTask(task);
 
         taskManager.deleteTask(taskId);
@@ -331,7 +331,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 new EpicTask("Test epicTask 1", "Test epicTask 1 description")
         );
         taskManager.addNewSubTask(new SubTask("Test SubTask 1"
-                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId));
+                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId, 0, null));
 
         taskManager.deleteEpicTask(epicTaskId);
 
@@ -350,7 +350,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 new EpicTask("Test epicTask 1", "Test epicTask 1 description")
         );
         int subTaskId = taskManager.addNewSubTask(new SubTask("Test SubTask 1"
-                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId));
+                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId, 0, null));
 
         taskManager.deleteSubTask(subTaskId);
 
@@ -373,28 +373,28 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
         //1 подзадача со статусом NEW
         SubTask subTask1 = new SubTask("Test SubTask 1"
-                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId);
+                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId, 0, null);
         int subtask1id = taskManager.addNewSubTask(subTask1);
         assertEquals(TaskStatus.NEW, taskManager.getEpicTask(epicTaskId).getStatus());
 
         //1 подзадача со статусом DONE
         subTask1 = new SubTask(subtask1id,"Test SubTask 2"
-                , "Test SubTask 2 description", TaskStatus.DONE, epicTaskId);
+                , "Test SubTask 2 description", TaskStatus.DONE, epicTaskId, 0, null);
         taskManager.updateSubTask(subTask1);
         assertEquals(TaskStatus.DONE, taskManager.getEpicTask(epicTaskId).getStatus());
 
         //1 подзадача со статусом IN_PROGRESS
         subTask1 = new SubTask(subtask1id,"Test SubTask 3"
-                , "Test SubTask 3 description", TaskStatus.IN_PROGRESS, epicTaskId);
+                , "Test SubTask 3 description", TaskStatus.IN_PROGRESS, epicTaskId, 0, null);
         taskManager.updateSubTask(subTask1);
         assertEquals(TaskStatus.IN_PROGRESS, taskManager.getEpicTask(epicTaskId).getStatus());
 
         //2 подзадачи со статусами NEW и DONE
         subTask1 = new SubTask(subtask1id,"Test SubTask 4"
-                , "Test SubTask 4 description", TaskStatus.NEW, epicTaskId);
+                , "Test SubTask 4 description", TaskStatus.NEW, epicTaskId, 0, null);
         taskManager.updateSubTask(subTask1);
         SubTask subTask2 = new SubTask("Test SubTask 5"
-                , "Test SubTask 5 description", TaskStatus.DONE, epicTaskId);
+                , "Test SubTask 5 description", TaskStatus.DONE, epicTaskId, 0, null);
         taskManager.addNewSubTask(subTask2);
         assertEquals(TaskStatus.IN_PROGRESS, taskManager.getEpicTask(epicTaskId).getStatus());
 
