@@ -14,7 +14,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
 
     public static void main(String[] args) {
-        TaskManager taskManager1 = Managers.getDefault();
+        TaskManager taskManager1 = new FileBackedTaskManager(new File("taskManagerData.csv"));
 
         // Создаем 2 задачи
         int task1Id = taskManager1.addNewTask(new Task("Написать код", "Выполнить финалку 3 спринта", TaskStatus.valueOf("IN_PROGRESS"), 0, null));

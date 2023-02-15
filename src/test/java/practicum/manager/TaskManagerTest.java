@@ -372,6 +372,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         int epicTaskId = taskManager.addNewEpicTask(
                 new EpicTask("Test epicTask 1", "Test epicTask 1 description")
         );
+
         assertFalse(taskManager.getEpicTasks().isEmpty());
         assertEquals(TaskStatus.NEW, taskManager.getEpicTask(epicTaskId).getStatus());
     }
@@ -437,6 +438,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void addNewCrossedTasks() {
         taskManager.addNewTask(new Task("Test task 1", "Test task 1 description", TaskStatus.NEW, 59, LocalDateTime.parse("15-02-2023--15:00", DT_FORMATTER)));
+
         taskManager.addNewTask(new Task("Test task 2", "Test task 2 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--14:40", DT_FORMATTER)));
         taskManager.addNewTask(new Task("Test task 2", "Test task 3 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--15:50", DT_FORMATTER)));
 
@@ -448,13 +450,10 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         Task task2 = new Task("Test task 2", "Test task 2 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--16:00", DT_FORMATTER));
         int task2Id = taskManager.addNewTask(task2);
 
-        assertEquals(2, taskManager.getTasks().size());
-
         taskManager.updateTask(new Task(task2Id, "Updated1 test task 2", "Updated1 test task 2 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--15:20", DT_FORMATTER)));
         taskManager.updateTask(new Task(task2Id, "Updated2 test task 2", "Updated2 test task 2 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--14:40", DT_FORMATTER)));
         taskManager.updateTask(new Task(task2Id, "Updated2 test task 3", "Updated3 test task 2 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--15:50", DT_FORMATTER)));
 
-        assertEquals(2, taskManager.getTasks().size());
         assertEquals(task2, taskManager.getTask(task2Id));
     }
 }

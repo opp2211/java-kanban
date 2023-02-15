@@ -58,9 +58,6 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         assertEquals(taskManager.getEpicTasks(), taskManager2.getEpicTasks());
         assertEquals(taskManager.getSubTasks(), taskManager2.getSubTasks());
         assertEquals(taskManager.getHistory(), taskManager2.getHistory());
-        //Я не понимаю почему не работает строка ниже. До заполнения истории корректно работает,
-        // а если вызвать хоть один taskManager.getTask(Task task), то не работает
-        //assertEquals(taskManager, taskManager2);
 
     }
     @Test
