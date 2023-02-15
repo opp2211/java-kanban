@@ -3,6 +3,7 @@ package manager;
 import tasks.EpicTask;
 import tasks.SubTask;
 import tasks.Task;
+import tasks.TaskStatus;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -11,6 +12,50 @@ import java.util.Objects;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
+
+    public static void main(String[] args) {
+        TaskManager taskManager1 = Managers.getDefault();
+
+        // Создаем 2 задачи
+        int task1Id = taskManager1.addNewTask(new Task("Написать код", "Выполнить финалку 3 спринта", TaskStatus.valueOf("IN_PROGRESS"), 0, null));
+        int task2Id = taskManager1.addNewTask(new Task("Лечь спать", "Выспаться перед сложным днем", TaskStatus.valueOf("NEW"), 0, null));
+
+        // Создаем эпик с тремя подзадачами
+        int epic1Id = taskManager1.addNewEpicTask(new EpicTask("Переезд", " "));
+        int subtask1Id = taskManager1.addNewSubTask(new SubTask("Собрать коробки", "1", TaskStatus.valueOf("DONE"), epic1Id, 0, null));
+        int subtask2Id = taskManager1.addNewSubTask(new SubTask("Упаковать кошку", "2", TaskStatus.valueOf("NEW"), epic1Id, 0, null));
+        int subtask3Id = taskManager1.addNewSubTask(new SubTask("3333", "3", TaskStatus.valueOf("NEW"), epic1Id, 0, null));
+
+        // Создаем эпик без подзадач
+        int epic2Id = taskManager1.addNewEpicTask(new EpicTask("Второй эпик", " "));
+
+        printAllTasks(taskManager1); // Выводим все задачи
+
+        //Вызываем некоторые задачи в случайном порядке и смотрим историю
+        taskManager1.getSubTask(subtask3Id);
+        taskManager1.getTask(task2Id);
+        taskManager1.getEpicTask(epic2Id);
+        taskManager1.getSubTask(subtask1Id);
+        printHistory(taskManager1);
+
+        //Создаем новый таскМенеджер и сверяем данные
+        TaskManager taskManager2 = Managers.getDefault();
+        printAllTasks(taskManager2);
+        printHistory(taskManager2);
+    }
+    private static void printAllTasks(TaskManager taskManager) {
+        System.out.println("Все задачи: ");
+        System.out.println(taskManager.getTasks());
+        System.out.println(taskManager.getEpicTasks());
+        System.out.println(taskManager.getSubTasks());
+        System.out.println();
+    }
+
+    private static void printHistory(TaskManager taskManager) {
+        System.out.println("История просмотров (" + taskManager.getHistory().size() + "): ");
+        System.out.println(taskManager.getHistory());
+        System.out.println();
+    }
 
     public FileBackedTaskManager(File file) {
         this.file = file;
