@@ -1,6 +1,6 @@
-package historymanager;
+package practicum.historymanager;
 
-import tasks.Task;
+import practicum.tasks.Task;
 
 import java.util.List;
 

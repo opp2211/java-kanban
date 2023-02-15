@@ -1,7 +1,7 @@
-package manager;
+package practicum.manager;
 
-import historymanager.HistoryManager;
-import tasks.*;
+import practicum.historymanager.HistoryManager;
+import practicum.tasks.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

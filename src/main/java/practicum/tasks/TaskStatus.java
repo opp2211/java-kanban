@@ -1,4 +1,4 @@
-package tasks;
+package practicum.tasks;
 
 public enum TaskStatus {
     NEW,

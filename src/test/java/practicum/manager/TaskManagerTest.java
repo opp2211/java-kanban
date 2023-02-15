@@ -1,9 +1,10 @@
-import manager.TaskManager;
+package practicum.manager;
+
 import org.junit.jupiter.api.Test;
-import tasks.EpicTask;
-import tasks.SubTask;
-import tasks.Task;
-import tasks.TaskStatus;
+import practicum.tasks.EpicTask;
+import practicum.tasks.SubTask;
+import practicum.tasks.Task;
+import practicum.tasks.TaskStatus;
 
 import java.util.List;
 

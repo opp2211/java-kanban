@@ -1,4 +1,4 @@
-package tasks;
+package practicum.tasks;
 
 import java.time.LocalDateTime;
 import java.util.*;

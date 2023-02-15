@@ -1,9 +1,11 @@
-import manager.Managers;
-import manager.TaskManager;
-import tasks.EpicTask;
-import tasks.SubTask;
-import tasks.Task;
-import tasks.TaskStatus;
+package practicum;
+
+import practicum.manager.Managers;
+import practicum.manager.TaskManager;
+import practicum.tasks.EpicTask;
+import practicum.tasks.SubTask;
+import practicum.tasks.Task;
+import practicum.tasks.TaskStatus;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

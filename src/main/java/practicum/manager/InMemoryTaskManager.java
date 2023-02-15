@@ -1,9 +1,9 @@
-package manager;
+package practicum.manager;
 
-import historymanager.HistoryManager;
-import tasks.EpicTask;
-import tasks.SubTask;
-import tasks.Task;
+import practicum.historymanager.HistoryManager;
+import practicum.tasks.EpicTask;
+import practicum.tasks.SubTask;
+import practicum.tasks.Task;
 
 import java.util.*;
 

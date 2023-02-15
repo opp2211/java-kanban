@@ -1,8 +1,8 @@
-package manager;
+package practicum.manager;
 
-import tasks.EpicTask;
-import tasks.SubTask;
-import tasks.Task;
+import practicum.tasks.EpicTask;
+import practicum.tasks.SubTask;
+import practicum.tasks.Task;
 
 import java.util.List;
 

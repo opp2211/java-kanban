@@ -1,7 +1,7 @@
-package manager;
+package practicum.manager;
 
-import historymanager.HistoryManager;
-import historymanager.InMemoryHistoryManager;
+import practicum.historymanager.HistoryManager;
+import practicum.historymanager.InMemoryHistoryManager;
 
 import java.io.File;
 
