@@ -6,12 +6,15 @@ import practicum.tasks.SubTask;
 import practicum.tasks.Task;
 import practicum.tasks.TaskStatus;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class TaskManagerTest<T extends TaskManager> {
     private static final int NON_EXIST_TASK_ID = -1;
+    public static final DateTimeFormatter DT_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy--HH:mm");
     protected T taskManager;
     @Test
     public void getTasks() {
@@ -365,40 +368,93 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(0, taskManager.getSubTasks().size());
     }
     @Test
-    public void updatingEpicStatus() {
-        //Пустой список подзадач
+    public void updatingEpicStatusWithEmptySubtasks() {
         int epicTaskId = taskManager.addNewEpicTask(
                 new EpicTask("Test epicTask 1", "Test epicTask 1 description")
         );
+        assertFalse(taskManager.getEpicTasks().isEmpty());
         assertEquals(TaskStatus.NEW, taskManager.getEpicTask(epicTaskId).getStatus());
+    }
+    @Test
+    public void updatingEpicStatusWithSubtasksAllNew() {
+        int epicTaskId = taskManager.addNewEpicTask(
+                new EpicTask("Test epicTask 1", "Test epicTask 1 description")
+        );
+        taskManager.addNewSubTask(new SubTask("Test SubTask 1"
+                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId, 0, null));
+        taskManager.addNewSubTask(new SubTask("Test SubTask 2"
+                , "Test SubTask 2 description", TaskStatus.NEW, epicTaskId, 0, null));
 
-        //1 подзадача со статусом NEW
-        SubTask subTask1 = new SubTask("Test SubTask 1"
-                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId, 0, null);
-        int subtask1id = taskManager.addNewSubTask(subTask1);
+        assertFalse(taskManager.getEpicTasks().isEmpty());
+        assertTrue(taskManager.getSubTasks().size() > 0);
         assertEquals(TaskStatus.NEW, taskManager.getEpicTask(epicTaskId).getStatus());
+    }
+    @Test
+    public void updatingEpicStatusWithSubtasksAllDone() {
+        int epicTaskId = taskManager.addNewEpicTask(
+                new EpicTask("Test epicTask 1", "Test epicTask 1 description")
+        );
+        taskManager.addNewSubTask(new SubTask("Test SubTask 1"
+                , "Test SubTask 1 description", TaskStatus.DONE, epicTaskId, 0, null));
+        taskManager.addNewSubTask(new SubTask("Test SubTask 2"
+                , "Test SubTask 2 description", TaskStatus.DONE, epicTaskId, 0, null));
 
-        //1 подзадача со статусом DONE
-        subTask1 = new SubTask(subtask1id,"Test SubTask 2"
-                , "Test SubTask 2 description", TaskStatus.DONE, epicTaskId, 0, null);
-        taskManager.updateSubTask(subTask1);
+        assertFalse(taskManager.getEpicTasks().isEmpty());
+        assertTrue(taskManager.getSubTasks().size() > 0);
         assertEquals(TaskStatus.DONE, taskManager.getEpicTask(epicTaskId).getStatus());
+    }
+    @Test
+    public void updatingEpicStatusWithSubtaskInProgress() {
+        int epicTaskId = taskManager.addNewEpicTask(
+                new EpicTask("Test epicTask 1", "Test epicTask 1 description")
+        );
+        taskManager.addNewSubTask(new SubTask("Test SubTask 1"
+                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId, 0, null));
+        taskManager.addNewSubTask(new SubTask("Test SubTask 2"
+                , "Test SubTask 2 description", TaskStatus.IN_PROGRESS, epicTaskId, 0, null));
 
-        //1 подзадача со статусом IN_PROGRESS
-        subTask1 = new SubTask(subtask1id,"Test SubTask 3"
-                , "Test SubTask 3 description", TaskStatus.IN_PROGRESS, epicTaskId, 0, null);
-        taskManager.updateSubTask(subTask1);
+
+        assertFalse(taskManager.getEpicTasks().isEmpty());
+        assertTrue(taskManager.getSubTasks().size() > 0);
         assertEquals(TaskStatus.IN_PROGRESS, taskManager.getEpicTask(epicTaskId).getStatus());
+    }
+    @Test
+    public void updatingEpicStatusWithSubtasksNewAndDone() {
+        int epicTaskId = taskManager.addNewEpicTask(
+                new EpicTask("Test epicTask 1", "Test epicTask 1 description")
+        );
+        taskManager.addNewSubTask(new SubTask("Test SubTask 1"
+                , "Test SubTask 1 description", TaskStatus.NEW, epicTaskId, 0, null));
+        taskManager.addNewSubTask(new SubTask("Test SubTask 2"
+                , "Test SubTask 2 description", TaskStatus.DONE, epicTaskId, 0, null));
 
-        //2 подзадачи со статусами NEW и DONE
-        subTask1 = new SubTask(subtask1id,"Test SubTask 4"
-                , "Test SubTask 4 description", TaskStatus.NEW, epicTaskId, 0, null);
-        taskManager.updateSubTask(subTask1);
-        SubTask subTask2 = new SubTask("Test SubTask 5"
-                , "Test SubTask 5 description", TaskStatus.DONE, epicTaskId, 0, null);
-        taskManager.addNewSubTask(subTask2);
+
+        assertFalse(taskManager.getEpicTasks().isEmpty());
+        assertTrue(taskManager.getSubTasks().size() > 0);
         assertEquals(TaskStatus.IN_PROGRESS, taskManager.getEpicTask(epicTaskId).getStatus());
+    }
 
+    @Test
+    public void addNewCrossedTasks() {
+        taskManager.addNewTask(new Task("Test task 1", "Test task 1 description", TaskStatus.NEW, 59, LocalDateTime.parse("15-02-2023--15:00", DT_FORMATTER)));
+        taskManager.addNewTask(new Task("Test task 2", "Test task 2 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--14:40", DT_FORMATTER)));
+        taskManager.addNewTask(new Task("Test task 2", "Test task 3 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--15:50", DT_FORMATTER)));
 
+        assertEquals(1, taskManager.getTasks().size());
+    }
+    @Test
+    public void updateTaskToBeCrossed() {
+        taskManager.addNewTask(new Task("Test task 1", "Test task 1 description", TaskStatus.NEW, 59, LocalDateTime.parse("15-02-2023--15:00", DT_FORMATTER)));
+        Task task2 = new Task("Test task 2", "Test task 2 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--16:00", DT_FORMATTER));
+        int task2Id = taskManager.addNewTask(task2);
+
+        assertEquals(2, taskManager.getTasks().size());
+
+        taskManager.updateTask(new Task(task2Id, "Updated1 test task 2", "Updated1 test task 2 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--15:20", DT_FORMATTER)));
+        taskManager.updateTask(new Task(task2Id, "Updated2 test task 2", "Updated2 test task 2 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--14:40", DT_FORMATTER)));
+        taskManager.updateTask(new Task(task2Id, "Updated2 test task 3", "Updated3 test task 2 description", TaskStatus.NEW, 29, LocalDateTime.parse("15-02-2023--15:50", DT_FORMATTER)));
+
+        assertEquals(2, taskManager.getTasks().size());
+        assertEquals(task2, taskManager.getTask(task2Id));
     }
 }
