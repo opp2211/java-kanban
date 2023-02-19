@@ -40,6 +40,9 @@ public class HttpTaskServer {
     public void start() {
         server.start();
     }
+    public void stop() {
+        server.stop(1);
+    }
     private void handler(HttpExchange h) {
         try {
             System.out.println("\n/tasks: " + h.getRequestURI());
