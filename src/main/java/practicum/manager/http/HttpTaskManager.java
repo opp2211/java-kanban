@@ -1,8 +1,8 @@
-package practicum;
+package practicum.manager.http;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import practicum.manager.FileBackedTaskManager;
+import practicum.manager.file.FileBackedTaskManager;
 import practicum.manager.Managers;
 import practicum.tasks.EpicTask;
 import practicum.tasks.SubTask;

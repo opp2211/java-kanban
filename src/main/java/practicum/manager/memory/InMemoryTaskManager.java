@@ -1,6 +1,8 @@
-package practicum.manager;
+package practicum.manager.memory;
 
 import practicum.historymanager.HistoryManager;
+import practicum.manager.Managers;
+import practicum.manager.TaskManager;
 import practicum.tasks.EpicTask;
 import practicum.tasks.SubTask;
 import practicum.tasks.Task;

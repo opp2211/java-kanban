@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import practicum.HttpTaskManager;
+import practicum.manager.http.HttpTaskManager;
 import practicum.historymanager.HistoryManager;
 import practicum.historymanager.InMemoryHistoryManager;
 

@@ -1,4 +1,4 @@
-package practicum.manager;
+package practicum.manager.file;
 
 public class ManagerSaveException extends RuntimeException {
     public ManagerSaveException(String message) {
