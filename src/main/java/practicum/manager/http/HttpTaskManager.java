@@ -28,21 +28,27 @@ public class HttpTaskManager extends FileBackedTaskManager {
     }
     private void load() {
         addTasks(gson.fromJson(kvTaskClient.load("tasks"), new TypeToken<ArrayList<Task>>() {}.getType()));
-        addTasks(gson.fromJson(kvTaskClient.load("subTasks"), new TypeToken<ArrayList<Task>>() {}.getType()));
-        addTasks(gson.fromJson(kvTaskClient.load("epicTasks"), new TypeToken<ArrayList<Task>>() {}.getType()));
+        addTasks(gson.fromJson(kvTaskClient.load("epicTasks"), new TypeToken<ArrayList<EpicTask>>() {}.getType()));
+        addTasks(gson.fromJson(kvTaskClient.load("subTasks"), new TypeToken<ArrayList<SubTask>>() {}.getType()));
 
-        List<Integer> history = gson.fromJson(kvTaskClient.load("epicTasks"),
-                new TypeToken<ArrayList<Task>>() {}.getType());
+        List<Integer> history = gson.fromJson(kvTaskClient.load("history"), new TypeToken<ArrayList<Integer>>() {}.getType());
         if (history != null)
             history.stream()
-                    .map(this::getTask)
+                    .map(id -> {
+                        if (tasks.containsKey(id)) {
+                            return tasks.get(id);
+                        } else if (epicTasks.containsKey(id)) {
+                            return epicTasks.get(id);
+                        } else
+                            return subTasks.get(id);
+                    })
                     .forEach(historyManager::add);
     }
     @Override
     protected void save() {
         kvTaskClient.put("tasks", gson.toJson(new ArrayList<>(tasks.values())));
-        kvTaskClient.put("subTasks", gson.toJson(new ArrayList<>(subTasks.values())));
         kvTaskClient.put("epicTasks", gson.toJson(new ArrayList<>(epicTasks.values())));
+        kvTaskClient.put("subTasks", gson.toJson(new ArrayList<>(subTasks.values())));
 
         kvTaskClient.put("history", gson.toJson(
                 historyManager.getHistory().stream()
@@ -60,12 +66,15 @@ public class HttpTaskManager extends FileBackedTaskManager {
                 case TASK:
                     addTask(task);
                     break;
+                case EPIC_TASK:
+                    EpicTask epicTask = (EpicTask) task;
+                    epicTask.getSubTaskIds().clear();
+                    addEpicTask(epicTask);
+                    break;
                 case SUB_TASK:
                     addSubTask((SubTask) task);
                     break;
-                case EPIC_TASK:
-                    addEpicTask((EpicTask) task);
-                    break;
+
             }
             if (id + 1 > idGenerator)
                 idGenerator = id + 1;
