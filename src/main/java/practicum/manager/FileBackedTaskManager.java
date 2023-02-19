@@ -60,7 +60,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public FileBackedTaskManager(File file) {
         this.file = file;
     }
-    private void save() {
+    protected FileBackedTaskManager() {
+        file = null;
+    }
+    protected void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write("id,type,name,status,description,epic\n");
             for (var task : super.tasks.values()) {
@@ -121,14 +124,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
         return taskManager;
     }
-    private void addTask (Task task) {
+    protected void addTask (Task task) {
         tasks.put(task.getId(), task);
         prioritizedTasks.add(task);
     }
-    private void addEpicTask (EpicTask epicTask) {
+    protected void addEpicTask (EpicTask epicTask) {
         epicTasks.put(epicTask.getId(), epicTask);
     }
-    private void addSubTask (SubTask subTask) {
+    protected void addSubTask (SubTask subTask) {
         subTasks.put(subTask.getId(), subTask);
         prioritizedTasks.add(subTask);
         //Привязываем сабТаск к эпику и обновляем статус эпика
