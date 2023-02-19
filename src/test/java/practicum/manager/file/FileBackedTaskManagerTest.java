@@ -1,8 +1,10 @@
-package practicum.manager;
+package practicum.manager.file;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import practicum.manager.TaskManager;
+import practicum.manager.TaskManagerTest;
 import practicum.manager.file.FileBackedTaskManager;
 import practicum.tasks.EpicTask;
 import practicum.tasks.SubTask;
@@ -13,7 +15,7 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
+public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
 
     private File file;
     @BeforeEach
