@@ -7,16 +7,24 @@ import practicum.tasks.SubTask;
 import practicum.tasks.Task;
 import practicum.tasks.TaskStatus;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Main {
     public static final DateTimeFormatter DT_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy--HH:mm");
-    static TaskManager taskManager = Managers.getDefault();
+    static TaskManager taskManager;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        KVServer kvServer = new KVServer();
+        kvServer.start();
+        taskManager = Managers.getDefault();
+
         System.out.println();
         executeTest();
+
+        HttpTaskServer httpTaskServer = new HttpTaskServer(taskManager);
+        httpTaskServer.start();
     }
 
     public static void executeTest() {
