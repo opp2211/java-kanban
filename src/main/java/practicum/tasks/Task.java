@@ -81,17 +81,15 @@ public class Task {
                 ", startTime=" + startTime +
                 '}';
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return getDuration() == task.getDuration() && Objects.equals(getId(),
-                task.getId()) && getTaskType() == task.getTaskType() && Objects.equals(getName(),
-                task.getName()) && Objects.equals(getDescription(),
-                task.getDescription()) && getStatus() == task.getStatus() && Objects.equals(getStartTime(),
-                task.getStartTime());
+        return Objects.equals(getDuration(), task.getDuration()) && Objects.equals(getId(), task.getId())
+                && getTaskType() == task.getTaskType() && Objects.equals(getName(), task.getName())
+                && Objects.equals(getDescription(), task.getDescription())
+                && getStatus() == task.getStatus() && Objects.equals(getStartTime(), task.getStartTime());
     }
 
     @Override

@@ -295,19 +295,4 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return true;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InMemoryTaskManager that = (InMemoryTaskManager) o;
-        return idGenerator == that.idGenerator && getTasks().equals(that.getTasks())
-                && getEpicTasks().equals(that.getEpicTasks()) && getSubTasks().equals(that.getSubTasks())
-                && historyManager.equals(that.historyManager);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getTasks(), getEpicTasks(), getSubTasks(), historyManager, idGenerator);
-    }
 }

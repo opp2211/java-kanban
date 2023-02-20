@@ -78,16 +78,4 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         return list;
     }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InMemoryHistoryManager that = (InMemoryHistoryManager) o;
-        return nodeMap.equals(that.nodeMap) && Objects.equals(head, that.head) && Objects.equals(tail, that.tail);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nodeMap, head, tail);
-    }
 }

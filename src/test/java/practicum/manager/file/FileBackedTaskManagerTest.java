@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import practicum.manager.TaskManager;
 import practicum.manager.TaskManagerTest;
-import practicum.manager.file.FileBackedTaskManager;
 import practicum.tasks.EpicTask;
 import practicum.tasks.SubTask;
 import practicum.tasks.Task;
@@ -35,8 +34,10 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         TaskManager taskManager2 = FileBackedTaskManager.loadFromFile(file);
 
         assertNotNull(taskManager2);
-        assertEquals(taskManager, taskManager2);
-
+        assertEquals(taskManager.getTasks(), taskManager2.getTasks());
+        assertEquals(taskManager.getEpicTasks(), taskManager2.getEpicTasks());
+        assertEquals(taskManager.getSubTasks(), taskManager2.getSubTasks());
+        assertEquals(taskManager.getHistory(), taskManager2.getHistory());
     }
     @Test
     public void LoadManagerWithSomeTasksAndHistory() {
@@ -68,8 +69,6 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         TaskManager taskManager2 = FileBackedTaskManager.loadFromFile(file);
 
         assertNotNull(taskManager2);
-        assertEquals(taskManager, taskManager2);
-
         assertTrue(taskManager2.getTasks().isEmpty());
         assertTrue(taskManager2.getEpicTasks().isEmpty());
         assertTrue(taskManager2.getSubTasks().isEmpty());
