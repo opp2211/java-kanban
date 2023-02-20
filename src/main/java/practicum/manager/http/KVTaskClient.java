@@ -11,15 +11,15 @@ public class KVTaskClient {
     private final String apiToken;
     private final HttpClient client;
 
-    public KVTaskClient(String host, int port) {
+    public KVTaskClient(int port) {
         client = HttpClient.newHttpClient();
-        url = "http://" + host + ":" + port + "/";
+        url = "http://localhost:" + port + "/";
         apiToken = register();
     }
     public static void main(String[] args) throws IOException {
         KVServer server = new KVServer();
         server.start();
-        KVTaskClient client = new KVTaskClient("localhost", KVServer.PORT);
+        KVTaskClient client = new KVTaskClient(KVServer.PORT);
 
         String testKey = "ключ1";
         client.put(testKey, "данные1");

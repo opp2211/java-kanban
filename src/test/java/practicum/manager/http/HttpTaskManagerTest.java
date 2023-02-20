@@ -20,7 +20,7 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
     public void setUp() throws IOException {
         kvServer = new KVServer();
         kvServer.start();
-        taskManager = new HttpTaskManager("localhost");
+        taskManager = new HttpTaskManager();
     }
     @AfterEach
     public void cleanUp() {
@@ -29,7 +29,7 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
     @Test
     public void LoadManagerWithOneEpic() {
         taskManager.addNewEpicTask(new EpicTask("Test epicTask 1", "Test task 1 description"));
-        TaskManager taskManager2 = HttpTaskManager.getLoaded("localhost");
+        TaskManager taskManager2 = HttpTaskManager.getLoaded();
 
         assertNotNull(taskManager2);
         assertEquals(taskManager.getTasks(), taskManager2.getTasks());
@@ -54,7 +54,7 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
         taskManager.getEpicTask(epicTask1Id);
 
 
-        TaskManager taskManager2 = HttpTaskManager.getLoaded("localhost");
+        TaskManager taskManager2 = HttpTaskManager.getLoaded();
 
         assertNotNull(taskManager2);
         assertEquals(taskManager.getTasks(), taskManager2.getTasks());
@@ -65,7 +65,7 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
     }
     @Test
     public void LoadEmptyManager() {
-        TaskManager taskManager2 = HttpTaskManager.getLoaded("localhost");
+        TaskManager taskManager2 = HttpTaskManager.getLoaded();
 
         assertNotNull(taskManager2);
         assertEquals(taskManager.getTasks(), taskManager2.getTasks());

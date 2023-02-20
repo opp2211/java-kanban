@@ -17,12 +17,12 @@ public class HttpTaskManager extends FileBackedTaskManager {
     private final KVTaskClient kvTaskClient;
     private final Gson gson;
 
-    public HttpTaskManager(String host) {
-        kvTaskClient = new KVTaskClient(host, 8078);
+    public HttpTaskManager() {
+        kvTaskClient = new KVTaskClient(8078);
         gson = Managers.getGson();
     }
-    public static HttpTaskManager getLoaded(String host) {
-        HttpTaskManager httpTaskManager = new HttpTaskManager(host);
+    public static HttpTaskManager getLoaded() {
+        HttpTaskManager httpTaskManager = new HttpTaskManager();
         httpTaskManager.load();
         return httpTaskManager;
     }

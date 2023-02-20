@@ -16,11 +16,10 @@ import java.time.format.DateTimeFormatter;
 
 public class Managers {
     private static final File DEFAULT_FILE = new File("taskManagerData.csv");
-    private static final String DEFAULT_HOST = "localhost";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy--HH:mm");
 
     public static TaskManager getDefault() {
-        return HttpTaskManager.getLoaded(DEFAULT_HOST);
+        return HttpTaskManager.getLoaded();
     }
 
     public static HistoryManager getDefaultHistoryManager() {

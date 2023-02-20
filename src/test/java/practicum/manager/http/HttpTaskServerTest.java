@@ -45,7 +45,7 @@ public class HttpTaskServerTest {
     public void beforeEach () throws IOException {
         kvServer = new KVServer();
         kvServer.start();
-        taskManager = new HttpTaskManager("localhost");
+        taskManager = new HttpTaskManager();
         taskServer = new HttpTaskServer(taskManager);
         taskServer.start();
 
