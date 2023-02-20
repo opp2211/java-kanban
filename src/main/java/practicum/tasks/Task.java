@@ -12,8 +12,8 @@ public class Task {
     protected long duration;
     protected LocalDateTime startTime;
 
-    public Task(Integer id, String name, String description, TaskStatus status, long duration
-            , LocalDateTime startTime) {
+    public Task(Integer id, String name, String description, TaskStatus status, long duration,
+                LocalDateTime startTime) {
         this.id = id;
         this.taskType = TaskType.TASK;
         this.name = name;
@@ -23,8 +23,8 @@ public class Task {
         this.startTime = startTime;
     }
 
-    public Task(String name, String description, TaskStatus status, long duration
-            , LocalDateTime startTime) {
+    public Task(String name, String description, TaskStatus status, long duration,
+                LocalDateTime startTime) {
         this.taskType = TaskType.TASK;
         this.name = name;
         this.description = description;

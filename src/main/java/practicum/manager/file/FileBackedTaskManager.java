@@ -19,14 +19,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         TaskManager taskManager1 = new FileBackedTaskManager(new File("taskManagerData.csv"));
 
         // Создаем 2 задачи
-        int task1Id = taskManager1.addNewTask(new Task("Написать код", "Выполнить финалку 3 спринта", TaskStatus.valueOf("IN_PROGRESS"), 0, null));
-        int task2Id = taskManager1.addNewTask(new Task("Лечь спать", "Выспаться перед сложным днем", TaskStatus.valueOf("NEW"), 0, null));
+        int task1Id = taskManager1.addNewTask(new Task("Написать код", "Выполнить финалку 3 спринта",
+                TaskStatus.valueOf("IN_PROGRESS"), 0, null));
+        int task2Id = taskManager1.addNewTask(new Task("Лечь спать", "Выспаться перед сложным днем",
+                TaskStatus.valueOf("NEW"), 0, null));
 
         // Создаем эпик с тремя подзадачами
         int epic1Id = taskManager1.addNewEpicTask(new EpicTask("Переезд", " "));
-        int subtask1Id = taskManager1.addNewSubTask(new SubTask("Собрать коробки", "1", TaskStatus.valueOf("DONE"), epic1Id, 0, null));
-        int subtask2Id = taskManager1.addNewSubTask(new SubTask("Упаковать кошку", "2", TaskStatus.valueOf("NEW"), epic1Id, 0, null));
-        int subtask3Id = taskManager1.addNewSubTask(new SubTask("3333", "3", TaskStatus.valueOf("NEW"), epic1Id, 0, null));
+        int subtask1Id = taskManager1.addNewSubTask(new SubTask("Собрать коробки", "1",
+                TaskStatus.valueOf("DONE"), epic1Id, 0, null));
+        int subtask2Id = taskManager1.addNewSubTask(new SubTask("Упаковать кошку", "2",
+                TaskStatus.valueOf("NEW"), epic1Id, 0, null));
+        int subtask3Id = taskManager1.addNewSubTask(new SubTask("3333", "3",
+                TaskStatus.valueOf("NEW"), epic1Id, 0, null));
 
         // Создаем эпик без подзадач
         int epic2Id = taskManager1.addNewEpicTask(new EpicTask("Второй эпик", " "));

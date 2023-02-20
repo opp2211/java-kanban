@@ -29,12 +29,12 @@ public class EpicTask extends Task {
                 TaskStatus subTaskStatus = subTasks.get(subTaskId).getStatus();
                 subTaskStatuses.add(subTaskStatus);
             }
-            if (subTaskStatuses.contains(TaskStatus.NEW)
-                    && !subTaskStatuses.contains(TaskStatus.IN_PROGRESS) && !subTaskStatuses.contains(TaskStatus.DONE)) {
+            if (subTaskStatuses.contains(TaskStatus.NEW) && !subTaskStatuses.contains(TaskStatus.IN_PROGRESS)
+                    && !subTaskStatuses.contains(TaskStatus.DONE)) {
                 status = TaskStatus.NEW;
 
-            } else if (subTaskStatuses.contains(TaskStatus.DONE)
-                    && !subTaskStatuses.contains(TaskStatus.IN_PROGRESS) && !subTaskStatuses.contains(TaskStatus.NEW)) {
+            } else if (subTaskStatuses.contains(TaskStatus.DONE) && !subTaskStatuses.contains(TaskStatus.IN_PROGRESS)
+                    && !subTaskStatuses.contains(TaskStatus.NEW)) {
                 status = TaskStatus.DONE;
             } else {
                 status = TaskStatus.IN_PROGRESS;

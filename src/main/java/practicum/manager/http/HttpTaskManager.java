@@ -31,7 +31,8 @@ public class HttpTaskManager extends FileBackedTaskManager {
         addTasks(gson.fromJson(kvTaskClient.load("epicTasks"), new TypeToken<ArrayList<EpicTask>>() {}.getType()));
         addTasks(gson.fromJson(kvTaskClient.load("subTasks"), new TypeToken<ArrayList<SubTask>>() {}.getType()));
 
-        List<Integer> history = gson.fromJson(kvTaskClient.load("history"), new TypeToken<ArrayList<Integer>>() {}.getType());
+        List<Integer> history = gson.fromJson(kvTaskClient.load("history"),
+                new TypeToken<ArrayList<Integer>>() {}.getType());
         if (history != null)
             history.stream()
                     .map(id -> {

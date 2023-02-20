@@ -46,8 +46,8 @@ public class CSVTaskFormat {
         TaskType taskType = TaskType.valueOf(split[1]);
         switch (taskType) {
             case TASK:
-                task = new Task(Integer.parseInt(split[0]), split[2], split[4], TaskStatus.valueOf(split[3])
-                        , Long.parseLong(split[5]), startTime);
+                task = new Task(Integer.parseInt(split[0]), split[2], split[4], TaskStatus.valueOf(split[3]),
+                        Long.parseLong(split[5]), startTime);
                 break;
             case EPIC_TASK:
                 task = new EpicTask(Integer.parseInt(split[0]), split[2], split[4]);
